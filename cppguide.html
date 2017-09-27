@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Google C++ Style Guide</title>
+<title>Google C++ Style Guide for Drake</title>
 <link rel="stylesheet" href="include/styleguide.css">
 <script src="include/styleguide.js"></script>
 <link rel="shortcut icon" href="https://www.google.com/favicon.ico">
 </head>
 <body onload="initStyleGuide();">
 <div id="content">
-<h1>Google C++ Style Guide</h1>
+<h1>Google C++ Style Guide for Drake</h1>
 <div class="horizontal_toc" id="tocDiv"></div>
 
 <div class="main_body">
 
 <h2 class="ignoreLink" id="Background">Background</h2>
+
+<p class="drake">Forked and adapted from the
+<a href="https://google.github.io/styleguide/cppguide.html">Google style
+guide</a>.  Many references to Google are deliberately left in to minimize
+merge conflicts.</p>
 
 <p>C++ is one of the main development languages  used by
 many of Google's open-source projects. As every C++
@@ -34,11 +39,16 @@ bit of a misnomer, since these conventions cover far more than
 just source file formatting.</p>
 
 <p>
-Most open-source projects developed by
-Google conform to the requirements in this guide.
+Most code in Drake conforms to the requirements in this guide.  Where
+Drake-specific rules contradict previous Google conventions, the text is
+retained for reference but otherwise marked <span class="nondrake">with a
+strikethrough</span>. The style is intentionally difficult to read in the
+normal course of perusal. Copying-and-pasting, or even simply highlighting the
+text, will facilitate reading if necessary.
+
+Rules specific to Drake <span class="drake">are highlighted like this</span> for
+clarity and easier maintainability.
 </p>
-
-
 
 
 
@@ -183,6 +193,10 @@ pitfalls of using header files.</p>
 <p>Header files should be self-contained (compile on their own) and
 end in <code>.h</code>.  Non-header files that are meant for inclusion
 should end in <code>.inc</code> and be used sparingly.</p>
+<p class="exception drake">
+  The Self-contained headers rule may be disobeyed when implementing
+  the <a href="http://drake.mit.edu/cxx_inl.html#cxx-inl-files">C++ *-inl.h
+  files pattern</a> in its exact form.</p>
 </div> 
 
 <div class="stylebody">
@@ -216,16 +230,18 @@ possible.</p>
 
 </div> 
 
-<h3 id="The__define_Guard">The #define Guard</h3>
+<h3 id="The__pragma_once_Guard">The #pragma once Guard</h3>
 
 <div class="summary">
-<p>All header files should have <code>#define</code> guards to
-prevent multiple inclusion. The format of the symbol name
+<p>All header files should have <code class="drake">#pragma once</code><code class="nondrake">#define</code> guards to
+prevent multiple inclusion.
+<span class="nondrake">The format of the symbol name
 should be
 <code><i>&lt;PROJECT&gt;</i>_<i>&lt;PATH&gt;</i>_<i>&lt;FILE&gt;</i>_H_</code>.</p>
+</span>
 </div> 
 
-<div class="stylebody">
+<div class="stylebody nondrake">
 
 
 
@@ -247,6 +263,18 @@ guard:</p>
 
 
 </div> 
+<div class="stylebody drake">
+  The advantages of using #pragma once are (1) it does not need to be updated
+  each time the name of the header file changes, and (2) it prevents silly
+  mistakes that occur when a developer copy-pastes a header file and forgets
+  to update its #define guard. The known drawbacks of using #pragma once,
+  namely the possibility of lack of compiler support and
+  compiler-dependent-behavior, is mitigated since Drake has
+  a <a href="http://drake.mit.edu/developers.html#supported-configurations">limited
+  set of officially supported platform configurations</a> on which correct
+  behavior will be
+  guaranteed. (<a href="https://github.com/RobotLocomotion/drake/issues/2104">#2104</a>)
+</div>
 
 <h3 id="Forward_Declarations">Forward Declarations</h3>
 
@@ -402,6 +430,9 @@ mutators.</p>
 <p>Use standard order for readability and to avoid hidden
 dependencies: Related header, C library, C++ library,  other libraries'
 <code>.h</code>, your project's <code>.h</code>.</p>
+
+<p class="drake">Separate each category of #include statements with a blank
+line. Then, accept whatever clang-format enforces.</p>
 </div>
 
 <div class="stylebody">
@@ -472,7 +503,9 @@ this rule and should be fixed when convenient.</p>
 
 <p>You should include all the headers that define the symbols you rely
 upon, except in the unusual case of <a href="#Forward_Declarations">forward
-declaration</a>. If you rely on symbols from <code>bar.h</code>,
+declaration</a>
+<span class="drake">(note <a href="#iwyu_exception">our exception however</a>)</span>.
+If you rely on symbols from <code>bar.h</code>,
 don't count on the fact that you included <code>foo.h</code> which
 (currently) includes <code>bar.h</code>: include <code>bar.h</code>
 yourself, unless <code>foo.h</code> explicitly demonstrates its intent
@@ -498,6 +531,15 @@ might look like this:</p>
 #include "foo/server/bar.h"
 </pre>
 
+<p class="exception drake"><a name="iwyu_exception">
+  While we encourage you to Include What You Use (IWYU) since it improves code
+  transparency and readability, it will not be strictly enforced. Instead, we
+  enforce a “weak include” style that simply requires every symbol referenced
+  within a file be covered by the transitive closure of all #include
+  statements in the file. We decided to make this exception because (1) we can
+  always adopt an IWYU rule later, (2) to reduce verbosity, and (3) we don’t
+  have a tool to enforce IWYU at this time.
+</a></p>
 <p class="exception">Sometimes, system-specific code needs
 conditional includes. Such code can put conditional
 includes after other includes. Of course, keep your
@@ -1308,6 +1350,16 @@ may omit <code>explicit</code>. Constructors that
 take a single <code>std::initializer_list</code> parameter should
 also omit <code>explicit</code>, in order to support copy-initialization
 (e.g. <code>MyType m = {1, 2};</code>).</p>
+
+<p class="exception drake">
+  For readability and consistency with external libraries like Eigen, we allow
+  one-argument constructors without the explicit tag (implicit cast operators)
+  if both types involved implement basic arithmetic operators commonly used in
+  arithmetic exceptions (at minimum +, both unary and binary -, binary *, and
+  ==). This lets us write concise mathematical expressions using math-like
+  objects without a proliferation of static_cast<> statements. (For context,
+  see <a href="https://github.com/RobotLocomotion/drake/pull/2231">#2231</a>)
+</p>
 </div>
 
 </div> 
@@ -1319,6 +1371,17 @@ also omit <code>explicit</code>, in order to support copy-initialization
 move-only, or neither copyable nor movable. Support copying and/or
 moving if these operations are clear and meaningful for your type.</p>
 </div>
+
+
+<p class="drake">A class must declare its own copy and move operations, and
+must not silently inherit the disposition of a base class.  Prefer to
+use <a href="https://github.com/RobotLocomotion/drake/blob/master/drake/common/drake_copyable.h"><code>drake/common/drake_copyable.h</code></a>
+macros (either <code>DRAKE_NO_COPY_NO_MOVE_NO_ASSIGN</code> or
+<code>DRAKE_DEFAULT_COPY_AND_MOVE_AND_ASSIGN</code>) whenever practical.  When
+not using the macros, the copy constructor and copy-assignment operator at
+least must be either deleted, defaulted, or implemented.  For discussion, see
+<a href="https://github.com/RobotLocomotion/drake/issues/4861">issue #4861</a>.
+</p></div>
 
 <div class="stylebody">
 
@@ -2204,7 +2267,7 @@ doubt, use overloads.</p>
 </div> 
 </div> 
 
-<h2 id="Google-Specific_Magic">Google-Specific Magic</h2>
+<h2 id="C++_Miscellany">C++ Miscellany</h2>
 
 
 
@@ -2212,7 +2275,49 @@ doubt, use overloads.</p>
 we use to make C++ code more robust, and various ways we use
 C++ that may differ from what you see elsewhere.</p>
 
- 
+<div class="drake">
+<h3 id="Doxygen">Doxygen</h3>
+
+<div class="summary">
+  <p>Classes and methods should be documented using Doxygen.</p>
+</div>
+
+<div class="stylebody">
+  <ul>
+    <li>Only use Doxygen special comment blocks (comments declared with /// or
+    /**) on published APIs (public or protected classes and methods). Code
+    with private access or declared in .cc files should not use the Doxygen
+    block format. However, note that markup such as @return may still be used
+    for non-Doxygen (// or /*) comment blocks when it improves readability of
+    the source code for developers, even though it will never be processed by
+    Doxygen.</li>
+    <li>If you decide to use Doxygen formatting hints, then those must render
+    correctly. For instructions on how to generate the Drake Doxygen website,
+    click <a href="http://drake.mit.edu/documentation_instructions.html#documentation-generation-instructions">here</a>. For
+    additional background information,
+    see <a href="https://github.com/RobotLocomotion/drake/pull/3584">PR
+    #3584.</a></li>
+    <li>Prefer Doxygen comment blocks that are readable in both a rendered and
+    un-rendered state. This could mean foregoing the most beautiful LaTeX
+    formatting for some serviceable text equations readable in the code. Or,
+    you may want to augment beautiful-but-unreadable formatting with a
+    simplified presentation of the same information to accommodate future
+    programmers, who are likely to only see the header file. For more
+    background information,
+    see <a href="https://github.com/RobotLocomotion/drake/pull/3584">PR
+    #3584</a>.</li>
+  </ul>
+</div>
+
+<h3 id="Memory Allocation">Memory Allocation</h3>
+
+<div class="summary">
+  <p>No dynamic allocation in the inner simulation/control loops. Code should
+    be still be thread-safe (e.g. be careful with pre-allocations).
+</p>
+</div>
+
+</div>
 
 <h3 id="Ownership_and_Smart_Pointers">Ownership and Smart Pointers</h3>
 
@@ -2378,9 +2483,87 @@ you can download
 
 </div> 
 
+<div class="drake">
+<h3 id="Eigen_specific">Eigen-Specific</h3>
+
+<div class="summary">
+<p>Manually provide user gradients only when we know more than AutoDiffScalar possibly could (e.g. sparsity of the gradients).</p>
+</div>
+
+</div>
  
+<div class="drake">
+<h3 id="GTEST_specific">GTEST-Specific</h3>
+
+<div class="summary">
+<p>Use the <code>GTEST</code> prefix in unit test declarations. For instance,
+use
+<code>GTEST_TEST(Group, Name)</code> instead of <code>TEST(Group,
+Name)</code>. (<a href="https://github.com/RobotLocomotion/drake/issues/2181">#2181</a>)</p>
+</div>
+
+</div>
+
+<div class="drake">
+<h3 id="Assertions">Assertions</h3>
+<div class="summary">
+<ul>
+<li>Never use <code>assert()</code> from <code>&lt;cassert&gt;</code>.</li>
+<li>Use <code>DRAKE_ASSERT(</code> <em>condition</em> <code>)</code> to
+compile and assert only in debug builds.</li>
+<li>Use <code>DRAKE_DEMAND(</code> <em>condition</em> <code>)</code> to assert
+in any kind of build (including release).</li>
+<li>When checking for nonnullness, either <code>DRAKE_DEMAND(ptr)</code> or
+<code>DRAKE_DEMAND(ptr != nullptr)</code> is allowed; use whichever seems
+clearer in context.</li>
+<li>When failing unconditionally, never use <code>DRAKE_ASSERT(false)</code>;
+instead, use <code>DRAKE_ABORT()</code>.</li>
+<li>For discussion, see Drake
+<a href="https://github.com/RobotLocomotion/drake/issues/1935">#1935</a> and
+<a href="https://github.com/RobotLocomotion/drake/issues/3355">#3355</a>.</li>
+</ul>
+</div>
+</div>
+
+<div class="drake">
+<h3 id="Main__">main()</h3>
+<div class="summary">
+<p>The <code>main()</code> method should be as brief as possible since it
+  exists outside of namespace <code>drake</code>. It should simply call
+  another method that is appropriately namespaced within
+  namespace <code>drake</code>.  The method can be called
+  "<code>main()</code>" since it is allowed by the style guide's
+  <a href="#Exceptions_to_Naming_Rules">exceptions
+  to naming rules</a>, though other method names like "<code>exec()</code>"
+  are also acceptable.</p>
+</div>
+</div>
+
+<div class="drake">
+<h3 id="Units">Units</h3>
+<div class="summary">
+<p>Use <a href="https://en.wikipedia.org/wiki/MKS_system_of_units">MKS</a>
+units whenever possible. When it is not possible, the code must clearly convey
+the units used.</p>
+</div>
+</div>
 
 <h2 id="Other_C++_Features">Other C++ Features</h2>
+
+<div class="drake">
+<h3 id="General_Rules">General Rules</h3>
+
+<div class="summary">
+<ul>
+  <li>Embrace templates/C++14 when it makes the code more correct (more clear
+  or more readable also implies more correct).</li>
+  <li>Minimize template requirements on public interfaces.</li>
+  <li>Avoid explicit template instantiations in cc files when possible.</li>
+</ul>
+
+</div>
+
+</div>
 
 <h3 id="Rvalue_references">Rvalue References</h3>
 
@@ -2482,10 +2665,25 @@ members.</p>
 <h3 id="Exceptions">Exceptions</h3>
 
 <div class="summary">
-<p>We do not use C++ exceptions.</p>
+<p class="drake"> Throwing exceptions is permitted and encouraged for error handling only.</p>
+<p class="nondrake">We do not use C++ exceptions.</p>
 </div>
 
 <div class="stylebody">
+  <p class="drake">Unit tests may catch exceptions using
+  <a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#exception-assertions">EXPECT_THROW</a>
+  if the exception is documented in the API. Otherwise, catching exceptions is
+  forbidden. For more context, see
+  <a href="https://github.com/robotlocomotion/drake/pull/3759">PR
+  #3759</a>.</p>
+
+  <p class="drake">We allow exceptions to be thrown because it enables a more
+  detailed description of the error to be provided relative to an assert
+  statement.</p>
+
+  <p class="drake">Note: This is a work-in-progress rule, but captures our
+  currently-in-effect style. We are open to discussion on additional uses for
+  exceptions if and when the need arises.</p>
 
 <div class="pros">
 <ul>
@@ -2562,6 +2760,9 @@ members.</p>
 </div>
 
 <div class="decision">
+<p class="drake">The discussion below defends the Google version of this rule (no
+throwing), but applies almost equally to the Drake version (no catching)</p>
+
 <p>On their face, the benefits of using exceptions
 outweigh the costs, especially in new projects. However,
 for existing code, the introduction of exceptions has
@@ -2595,7 +2796,7 @@ features added in C++11, such as
 <code>std::exception_ptr</code> and
 <code>std::nested_exception</code>.</p>
 
-<p>There is an <a href="#Windows_Code">exception</a> to
+<p class="nondrake">There is an <a href="#Windows_Code">exception</a> to
 this rule (no pun intended) for Windows code.</p>
 
 </div>
@@ -3047,6 +3248,33 @@ types, use pre-increment.</p>
 <p>Use <code>const</code> whenever it makes sense. With C++11,
 <code>constexpr</code> is a better choice for some uses of
 const.</p>
+<ul class="drake">
+  <li>A class member variable <em>must</em> be declared <code>const</code>
+  if it is not modified after the class is constructed.</li>
+  <li><p>You <em>must not</em> use <code>const</code> in a function
+declaration where it adds no meaning. That occurs in pass-by-value parameter
+declarations, where <code>const int i</code> and <code>int i</code> mean the
+same thing, and in return-by-value declarations, where <code>int f()</code>
+and <code>const int f()</code> are also synonymous.  You may
+add <code>const</code> to such parameter declarations in the function
+<em>definition</em>, where it does indicate that the implementation will not
+modify its own copy of the parameter value. The C++ standard explicitly states
+that the signatures are identical with or without the <code>const</code> in
+these cases,
+see <a href="http://www.lcdf.org/c%2B%2B/clause13.html">Overloadable
+declarations</a>. (This applies to <code>volatile</code> also.)</p>
+<p>If you want to declare and define a function in one place, you have
+several options:</p>
+<ul>
+<li>Forgo marking the parameters as <code>const</code> (not a great loss for
+short functions defined inline), or</li>
+<li>create some <code>const</code> local variables initialized to the supplied
+parameter values (likely to be optimized away by the compiler), or</li>
+<li>split the declaration and definition (be sure to add the <code>inline</code>
+keyword if the function would otherwise have been implicitly inlined).</li>
+</ul>
+</ul>
+
 </div>
 
 <div class="stylebody">
@@ -3199,6 +3427,9 @@ Keep in mind that even if your value won't ever be too large
 for an <code>int</code>, it may be used in intermediate
 calculations which may require a larger type. When in doubt,
 choose a larger type.</p>
+<div class="drake">
+  <p><code>ptrdiff_t</code> is allowed when doing arithmetic on bare pointers (this is very rare). Do not use it as a generic “large signed integer” type, nor as a generic “index into a matrix” type.</p>
+</div>
 </div>
 
 <div class="stylebody">
@@ -3291,6 +3522,23 @@ to use iterators and containers rather than pointers and sizes, try
 not to mix signedness, and try to avoid unsigned types (except for
 representing bitfields or modular arithmetic). Do not use an unsigned
 type merely to assert that a variable is non-negative.</p>
+
+<div class="drake">
+<p>Unsigned types are prohibited except in the specific cases of:</p>
+<ul>
+  <li><code>uint32_t</code> or <code>uint64_t</code> are allowed for bitfields</li>
+  <li><code>size_t</code> is allowed when a (1) non-Drake API uses unsigned types, and (2) casting to a signed type during Drake’s interactions with the non-Drake API would obscure the readability of our code, and (3) subtraction underflow below zero is obviously not at risk.</li>
+  <li>After including <code>&lt;cstddef&gt;</code>, assume
+    that <code>size_t</code> is defined in the global namespace. Do not
+    preface it with <code>std::</code> and do not write <code>using
+    std::size_t</code> in your code. There is a hypothetical possibility
+    that this won't work on some compiler someday but we deem the
+    risk acceptable in trade for allowing this common, clutter-reducing
+    practice. For discussion, see
+    <a href="http://stackoverflow.com/questions/5813700/difference-between-size-t-and-stdsize-t">stackoverflow</a>
+    and Drake <a href="https://github.com/RobotLocomotion/drake/issues/2374">#2374</a>.</li>
+</ul>
+</div>
 </div>
 
 </div> 
@@ -4374,6 +4622,7 @@ the rules are the rules.</p>
 
 <div class="summary">
 <p>Names should be descriptive; avoid abbreviation.</p>
+<p class="drake">Always prefer long, human-readable variable/method/class names to short acronyms.  However note that there are exceptions to this rule, discussed below.</p>
 </div>
 
 <div class="stylebody">
@@ -4422,6 +4671,23 @@ category: type template parameters should follow the rules for
 parameters should follow the rules for <a href="#Variable_Names">
 variable names</a>.
 
+<p class="exception drake">
+  Method names may violate both the name structure standard and the “long,
+  human-readable” standard above if a short, non-compliant name more closely
+  matches the common conventions of the field. For instance, the matrix
+  portion of a linear complementarity constraint is traditionally ‘M’ (one
+  letter, upper-case); it is not mandatory to downcase it or give it a more
+  verbose name.
+</p>
+<p class="exception drake">
+  Note that the Drake multibody tree and related types have their own naming
+  standard, "Monogram Notation", described
+  in <code>drake/multibody/multibody_doxygen.h</code>
+  (<a href="http://drake.mit.edu/doxygen_cxx/group__multibody__notation.html">generated
+  documentation here</a>), that applies to all variables that denote frames
+  and transforms between frames.
+</p>
+
 </p></div> 
 
 <h3 id="File_Names">File Names</h3>
@@ -4443,7 +4709,8 @@ local pattern to follow, prefer "_".</p>
   <li><code>my_useful_class.cc</code></li>
   <li><code>my-useful-class.cc</code></li>
   <li><code>myusefulclass.cc</code></li>
-  <li><code>myusefulclass_test.cc // _unittest and _regtest are deprecated.</code></li>
+  <li><code class="nondrake">myusefulclass_test.cc // _unittest and _regtest are deprecated.</code></li>
+  <li><span class="drake"><code>test/myusefulclass_test.cc</code> (For tests for library-public methods of MyUsefulClass; see <a href="https://github.com/RobotLocomotion/drake/issues/2182">#2182</a>.)</span></li>
 </ul>
 
 <p>C++ files should end in <code>.cc</code> and header files should end in
@@ -4603,7 +4870,9 @@ is an unimportant implementation detail.)</p>
 <p>Accessors and mutators (get and set functions) may be named like
 variables. These often correspond to actual member variables, but this is
 not required. For example, <code>int count()</code> and <code>void
-set_count(int count)</code>.</p>
+set_count(int count)</code>.
+<span class="drake">Such methods
+should have a time complexity of O(1) and be less than 5 lines long.</span></p>
 
 </div> 
 
@@ -5872,6 +6141,17 @@ while (condition) continue;  // Good - continue indicates no logic.
 <div class="summary">
 <p>No spaces around period or arrow. Pointer operators do not
 have trailing spaces.</p>
+<div class="drake">
+<p>When declaring a pointer or a reference, the "<code>*</code>"
+and "<code>&amp;</code>"; symbols must be next to the variable <em>type</em>,
+not the variable <em>name</em>. In other words use:</p>
+<pre>const MyClass&amp; foo;</pre>
+<p>instead of</p>
+<pre class="badcode">const MyClass &amp;foo;  // Bad - & in wrong place</pre>
+<p>This is what is enforced
+by <a href="code_style_tools.html#code-style-tools-clang-format"><span>clang-format</span></a>. For additional context, see
+<a href="https://github.com/robotlocomotion/drake/pull/3830#issuecomment-254849776">this comment thread</a>.</p>
+</div>
 </div>
 
 <div class="stylebody">
@@ -5990,6 +6270,7 @@ return(result);                // return is not a function!
 <h3 id="Variable_and_Array_Initialization">Variable and Array Initialization</h3>
 
 <div class="summary">
+<p class="drake">Required for built-in, non-const types.</p>
 <p>Your choice of <code>=</code>, <code>()</code>, or
 <code>{}</code>.</p>
 </div>
@@ -6029,6 +6310,36 @@ errors.</p>
 int pi{3.14};  // Compile error: narrowing conversion.
 </pre>
 
+<div class="drake">
+  <p>Always
+    use <a href="http://www.stroustrup.com/C++11FAQ.html#member-init">in-class
+    member initialization</a> for built-in non-<code>const</code> data types
+    that would would otherwise be uninitialized, including numerical types,
+    pointers, and enumerations.</p>
+  <p>The syntax <code>int count_{};</code>
+    (called <a href="http://en.cppreference.com/w/cpp/language/value_initialization">
+    value initialization</a>) ensures that these types are zero-initialized
+    rather than left with unpredictable content (informally known as
+    "garbage"). You may also provide explicit values such as <code>bool
+    flag_{false};</code> (for clarity) or
+    <code>bool uninitialized_{true};</code> (because zero is the wrong initial
+    value).</p>
+  <p>Specific cases:</p>
+  <ul>
+    <li>You should always provide a value for <code>enum</code> members since
+      zero might not be one of the allowed enumerations.</li>
+    <li>Class objects are responsible for their own construction so they do
+      not need to be member-initialized, but you can do so if the default
+      constructor does not provide the behavior you want.</li>
+    <li>Note that fixed-size Eigen objects are intentionally left
+      uninitialized; if you want yours zero-initialized you can
+      member-initialize it by passing an appropriate <code>Zero</code>, for
+      example:
+      <code>Eigen::Matrix3d mat_{Eigen::Matrix3d::Zero()};</code>.</li>
+    <li>Member variables that are declared <code>const</code> need not be
+      initialized in this manner since the compiler requires that they be
+      initialized in the constructor's initializer list.</li>
+  </ul>
 </div> 
 
 <h3 id="Preprocessor_Directives">Preprocessor Directives</h3>
@@ -6375,8 +6686,12 @@ local consistency, too.</p>
 
  
 
-<h3 id="Windows_Code">Windows Code</h3>
+<h3 id="Windows_Code" class="nondrake">Windows Code</h3>
 
+<p class="drake">Drake does not support Windows.  The Windows-specific rules
+below are neither applicable to nor appropriate for Drake.</p>
+
+<div class="nondrake">
 <div class="summary">
 <p> Windows
 programmers have developed their own set of coding
@@ -6463,6 +6778,7 @@ occasionally need to break on Windows:</p>
 </ul>
 
 </div> 
+</div>
 
 <h2 id="Parting_Words">Parting Words</h2>
 

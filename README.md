@@ -1,3 +1,103 @@
+Drake Style Guide
+=================
+
+This repository is a fork of Google's style guide.  Drake's C++ style is a
+small deviation from Google's, and approximately tracks Google's latest style
+guidance at a small delay.
+
+The README for Google's style guide follows after some Drake-specific notes
+below.
+
+Maintenance Philosophy
+----------------------
+
+This style guide should be updated in two cases:
+
+ * The agreement of the Drake platform reviewers on a change to our style
+   rules.
+
+ * A change from the upstream Google style guide which has been reviewed (and
+   altered if necessary) by the Drake platform reviewers.
+
+Both sorts of updates should use ordinary Reviewable review for the platform
+reviewer discussion.
+
+When making a change, annotate an html tag surrounding the new material with
+`class="drake"`.  This makes it easy for readers to see Drake-relevant
+changes and for maintainers to understand our diffs.  Annotate Google material
+that is superseded by Drake changes but is still useful for reference with
+`class="nondrake"`.
+
+When making a change, avoid changing whitespace or indentation unnecessarily.
+Conflict resolution is difficult in prose text, and conflicts that are just
+paragraph reflows make future maintainers cry.
+
+Making New Changes
+------------------
+
+Branch, update, and PR as you would any other Drake change.
+
+Pulling Upstream Changes
+------------------------
+
+A Drake style guide maintainer should keep a local clone of this repository.
+This should be set up in the usual manner, but with remotes to both Google and
+Drake as you will want to be able to rebase from either one:
+
+ * Fork "styleguide" into your account, this is where all your branches will be
+
+   * Go to https://github.com/RobotLocomotion/styleguide and press "Fork" in
+     the top-right corner.  If prompted for the account to fork to, select
+     your account.
+
+ * Check out your own fork
+
+   * Go to forked repository https://github.com/**USERNAME**/styleguide and
+     press the green "Clone or download" button, then select "ssh" and copy
+     ssh URL
+
+   * Clone it on your local machine:
+
+            git clone URL_YOU_JUST_COPIED
+            cd styleguide
+
+ * Add a "drake" remote for the Drake styleguide and make it the default
+   upstream.  Note that for compatibility with Google, we use the branch
+   `gh-pages` as our master:
+
+        git remote add drake git@github.com:RobotLocomotion/styleguide.git
+        git remote set-url --push drake no_push
+        git branch --set-upstream-to drake/gh-pages
+
+ * Add a "google" remote for the Drake styleguide:
+
+        git remote add google git@github.com:google/styleguide.git
+        git remote set-url --push google no_push
+
+Now that you have a repository and remotes set up, you want to be up-to-date
+with Drake and then pull Google's changes:
+
+    git co gh-pages
+    git pull --ff-only
+    git co -b **NEW_BRANCH_NAME**
+    git pull --rebase google gh-pages
+    **RESOLVE CONFLICTS**
+    git push --set-upstream origin **NEW_BRANCH_NAME**
+    **ORDINARY PR PROCESS**
+
+There is a high likelihood that this rebase will have conflicts.  These
+conflicts represent google changes to or near Drake-specific style rules and
+should be considered carefully rather than accepted or rejected blindly.
+
+When you have resolved the rebase you should commit, push, and PR in the usual
+manner.  In creating the PR, double-check that you are PR'ing against
+`RobotLocomotion/styleguide`, not `google/styleguide`.
+
+You should add [all of the platform reviewers](http://drake.mit.edu/developers.html#review-process) to the resulting PR.
+
+--
+
+
 Google Style Guides
 ===================
 
