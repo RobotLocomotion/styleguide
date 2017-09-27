@@ -259,3 +259,15 @@ address {
   display: block;
   margin-bottom: 1em;
 }
+
+
+#drake {
+  font-weight: bold;
+  color: purple;
+}
+
+#nondrake {
+  text-decoration: line-through;
+  font-size: 90%;
+  color: pink;
+}
