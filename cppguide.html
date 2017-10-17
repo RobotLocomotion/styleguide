@@ -1984,6 +1984,17 @@ both input and output (often classes/structs) muddy the
 waters, and, as always, consistency with related
 functions may require you to bend the rule.</p>
 
+<p class="clarification drake">
+In particular, the ubiquitous Drake <code>Context</code>
+object, when mutable, is typically an in/out parameter as
+mentioned above. We prefer to have it consistently
+first, where it can be mostly ignored and does not
+interfere with the ability to have default parameters
+at the end of the parameter list. So a
+<code>Context</code> parameter should come first, and 
+be declared either <code>const Context&</code>, or
+<code>Context*</code> if it is mutable.</p>
+
 </div> 
 
 <h3 id="Write_Short_Functions">Write Short Functions</h3>

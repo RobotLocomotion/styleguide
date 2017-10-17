@@ -246,6 +246,13 @@ address {
   margin-bottom: 1em;
 }
 
+.clarification:before {
+  content: "Clarification: ";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1em;
+}
+
 .exception:before {
   content: "Exception: ";
   font-weight: bold;
