@@ -5126,6 +5126,7 @@ def CheckForNonConstReference(filename, clean_lines, linenum,
   # it's actually a declaration expression.
   whitelisted_functions = (r'(?:[sS]wap(?:<\w:+>)?|'
                            r'operator\s*[<>][<>]|'
+                           r'hash_append|'
                            r'static_assert|COMPILE_ASSERT'
                            r')\s*\(')
   if Search(whitelisted_functions, line):
