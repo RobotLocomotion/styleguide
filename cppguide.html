@@ -4309,7 +4309,14 @@ standard libraries in C++11:</p>
 <h3 id="std_hash">std::hash</h3>
 
 <div class="summary">
+<span class="nondrake">
 <p>Do not define specializations of <code>std::hash</code>.</p>
+</span>
+<span class="drake">
+<p>All Drake hash functions should use the
+<a href="http://drake.mit.edu/doxygen_cxx/group__hash__append.html">hash_append</a>
+approach.</p>
+</span>
 </div>
 
 <div class="stylebody">
@@ -4366,12 +4373,14 @@ language does not allow us to extend it to support them.</p>
 
 <div class="decision">
 <p>You can use <code>std::hash</code> with the types that it supports
-"out of the box", but do not specialize it to support additional types.
+"out of the box"<span class="nondrake">
+, but do not specialize it to support additional types.
 If you need a hash table with a key type that <code>std::hash</code>
 does not support, consider using legacy hash containers (e.g.
 <code>hash_map</code>) for now; they use a different default hasher,
-which is unaffected by this prohibition.</p>
+which is unaffected by this prohibition</span>.</p>
 
+<span class="nondrake">
 <p>If you want to use the standard hash containers anyway, you will
 need to specify a custom hasher for the key type, e.g.</p>
 <pre>std::unordered_map&lt;MyKeyType, Value, MyKeyTypeHasher&gt; my_map;
@@ -4383,6 +4392,16 @@ that you can use; otherwise work with them to provide one,
 <p>We are planning to provide a hash function that can work with any type,
 using a new customization mechanism that doesn't have the drawbacks of
 <code>std::hash</code>.</p>
+</span>
+<span class="drake">
+<p>All Drake hash functions should use the
+<a href="http://drake.mit.edu/doxygen_cxx/group__hash__append.html">hash_append</a>
+approach.  This includes both hashing support added to Drake's data types, and
+any of Drake's custom hash algorithms.</p>
+<p>Define specializations of <code>std::hash</code> only as sugar for
+<code>drake::DefaultHash</code>.</p>
+</span>
+
 </div>
 
 </div>  
