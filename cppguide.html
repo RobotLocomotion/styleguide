@@ -881,19 +881,31 @@ for (int i = 0; i &lt; 1000000; ++i) {
 
 <div class="summary">
   <p>Variables of class type with <a href="http://en.cppreference.com/w/cpp/language/storage_duration#Storage_duration">
-    static storage duration</a> are forbidden: they cause hard-to-find bugs due
-  to indeterminate order of construction and destruction. However, such
-  variables are allowed if they are <code>constexpr</code>: they have no
-  dynamic initialization or destruction.</p>
+    static storage duration</a> are forbidden
+  <span class="drake">(except in a narrow set of circumstances)</span>,
+  because they cause hard-to-find bugs due to
+  <a href="https://isocpp.org/wiki/faq/ctors#static-init-order">indeterminate
+  order of construction and destruction</a>.</p>
 </div>
 
 <div class="stylebody">
 
 <p>Objects with static storage duration, including global
 variables, static variables, static class member
-variables, and function static variables, must be Plain
-Old Data (POD): only ints, chars, floats, or pointers, or
-arrays/structs of POD.</p>
+variables, and function static variables, <span class="drake">are
+permitted only:</span><ul>
+<li><span class="drake">When the variable is</span>
+<a href="http://en.cppreference.com/w/cpp/language/constexpr"><code>constexpr</code></a>:
+they have no dynamic initialization or destruction.</li>
+<li><span class="drake">When the variable is</span>
+<a href="http://en.cppreference.com/w/cpp/concept/PODType">Plain
+Old Data (POD)</a>: ints, chars, floats, or pointers, or
+arrays/structs of POD.</li>
+<li><span class="drake">When the variable is a function
+static variable of type
+<a href="http://drake.mit.edu/doxygen_cxx/classdrake_1_1never__destroyed.html">drake::never_destroyed&lt;T&gt;</a>.
+</span></li>
+</ul/</p>
 
 <p>The order in which class constructors and initializers
 for static variables are called is only partially
@@ -903,7 +915,9 @@ Therefore in addition to banning globals of class type,
 we do not allow non-local static variables to be initialized
 with the result of a function, unless that function (such
 as getenv(), or getpid()) does not itself depend on any
-other globals. However, a static POD variable within
+other globals. However, a static POD 
+<span class="drake">or never_destroyed</span>
+variable within
 function scope may be initialized with the result of a
 function, since its initialization order is well-defined
 and does not occur until control passes through its
@@ -924,6 +938,7 @@ destructor for a static <code>string</code> variable
 might be run prior to the destructor for another variable
 that contains a reference to that string.</p>
 
+<span class="nondrake">
 <p>One way to alleviate the destructor problem is to
 terminate the program by calling
 <code>quick_exit()</code> instead of <code>exit()</code>.
@@ -952,6 +967,7 @@ function or from pthread_once(). Note that this must be a
 raw pointer, not a "smart" pointer, since the smart
 pointer's destructor will have the order-of-destructor
 issue that we are trying to avoid.</p>
+<span>
 
 
 
