@@ -973,6 +973,9 @@ void bar() {
   static std::map&lt;int, int&gt; kData = {{1, 0}, {2, 0}, {3, 0}};
 }</pre>
 
+<span class="drake">Note that <code>never_destroyed</code> has a trivial
+destructor.</span>
+
 <p>Note that references are not objects, and thus they are not subject to the
 constraints on destructibility. The constraint on dynamic initialization still
 applies, though. In particular, a function-local static reference of the form
