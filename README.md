@@ -42,7 +42,8 @@ Pulling Upstream Changes
 
 A Drake style guide maintainer should keep a local clone of this repository.
 This should be set up in the usual manner, but with remotes to both Google and
-Drake as you will want to be able to rebase from either one:
+Drake as you will want to (a) merge from Google and (b) rebase onto Drake
+updates:
 
  * Fork "styleguide" into your account, this is where all your branches will be
 
@@ -78,14 +79,14 @@ Now that you have a repository and remotes set up, you want to be up-to-date
 with Drake and then pull Google's changes:
 
     git co gh-pages
-    git pull --ff-only
+    git pull --rebase
     git co -b **NEW_BRANCH_NAME**
-    git pull --rebase google gh-pages
+    git pull google gh-pages
     **RESOLVE CONFLICTS**
     git push --set-upstream origin **NEW_BRANCH_NAME**
     **ORDINARY PR PROCESS**
 
-There is a high likelihood that this rebase will have conflicts.  These
+There is a high likelihood that this merge will have conflicts.  These
 conflicts represent google changes to or near Drake-specific style rules and
 should be considered carefully rather than accepted or rejected blindly.
 
