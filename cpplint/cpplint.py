@@ -51,6 +51,12 @@ import sre_compile
 import string
 import sys
 import unicodedata
+import sysconfig
+
+try:
+  xrange          # Python 2
+except NameError:
+  xrange = range  # Python 3
 
 
 _USAGE = """
@@ -1846,8 +1852,8 @@ def GetHeaderGuardCPPVariable(filename):
                                  PathSplitToList(_root))
 
     if _root_debug:
-      sys.stderr.write("_root lstrip (maybe_path=%s, file_path_from_root=%s," +
-          " _root=%s)\n" %(maybe_path, file_path_from_root, _root))
+      sys.stderr.write(("_root lstrip (maybe_path=%s, file_path_from_root=%s," +
+          " _root=%s)\n") %(maybe_path, file_path_from_root, _root))
 
     if maybe_path:
       return os.path.join(*maybe_path)
@@ -1860,8 +1866,8 @@ def GetHeaderGuardCPPVariable(filename):
                                  PathSplitToList(root_abspath))
 
     if _root_debug:
-      sys.stderr.write("_root prepend (maybe_path=%s, full_path=%s, " +
-          "root_abspath=%s)\n" %(maybe_path, full_path, root_abspath))
+      sys.stderr.write(("_root prepend (maybe_path=%s, full_path=%s, " +
+          "root_abspath=%s)\n") %(maybe_path, full_path, root_abspath))
 
     if maybe_path:
       return os.path.join(*maybe_path)
@@ -4286,6 +4292,16 @@ def GetLineWidth(line):
       if unicodedata.east_asian_width(uc) in ('W', 'F'):
         width += 2
       elif not unicodedata.combining(uc):
+        # Issue 337
+        # https://mail.python.org/pipermail/python-list/2012-August/628809.html
+        if (sys.version_info.major, sys.version_info.minor) <= (3, 2):
+          # https://github.com/python/cpython/blob/2.7/Include/unicodeobject.h#L81
+          is_wide_build = sysconfig.get_config_var("Py_UNICODE_SIZE") >= 4
+          # https://github.com/python/cpython/blob/2.7/Objects/unicodeobject.c#L564
+          is_low_surrogate = 0xDC00 <= ord(uc) <= 0xDFFF
+          if not is_wide_build and is_low_surrogate:
+            width -= 1
+          
         width += 1
     return width
   else:
