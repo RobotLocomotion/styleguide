@@ -5261,7 +5261,89 @@ you cannot understand the directions, find the person who
 created the deprecation and ask them for help using the
 new interface point.</p>
 
+</div> 
 
+<h3 id="Authorship_Comments">Authorship Comments</h3>
+
+<div class="summary">
+<p>If you are the original author or a substantial co-author
+of an identifiable Drake subcomponent, and want your name
+to appear in the source and Doxygen, you may sign your
+contribution.</p>
+</div>
+
+<div class="stylebody">
+
+<p>Drake is a large-team effort in which many programmers
+typically contribute to the same block of code, with no
+particular person claiming ownership. That is reflected
+in the alphabetized Drake 
+<a href="https://drake.mit.edu/credits">Credits Page</a>,
+and you should definitely add yourself to that list. In
+addition, git maintains a history of all code modifications,
+and <code>git blame</code> can be used to find out who did
+what when. So in most cases there is no need to add
+authorship details to the code.
+However, if you are particularly proud of a significant
+contribution, and you are clearly the primary author or
+a major co-author, you can sign your beautiful creation
+with a Doxygen-formatted comment. Then your name
+will appear in the 
+source code and in the generated Doxygen documentation.
+But please keep in mind that with fame comes paparazzi. If
+your name appears in code you can expect questions and
+criticism to come your way, possibly for many years.</p>
+
+<p>IMPORTANT NOTE: Copyright is a legal concept separate 
+from authorship. Listing yourself as an author 
+does <em>not</em> automatically confer copyright to you.</p>
+
+<p>To sign your work, use the Doxygen <code>@author</code> 
+command or <code>@authors</code> for multiple authors.
+You may sign any <em>content</em> (class, method, XML document,
+documentation block, etc.) but please do not sign a
+<em>container</em>, such as a file. Fixing a bug, 
+improving comments, refactoring, reformatting, etc. are
+valuable contributions and greatly appreciated but do not
+qualify as authorship.  Do not add authors who did not 
+actually write the source -- this is not a mechanism for 
+acknowledging researchers, mentors, reviewers, or funders. 
+There is plenty of room for that sort of credit in comments, 
+but the <code>@authors</code> command is not the right place.
+When in doubt about any of this, please discuss with your 
+Platform Reviewer.</p>
+
+<p>The format for code-signing is:<pre>
+@author Jane Doe (2017-18) Optional statement of contribution.
+</pre>
+That is, use your actual human name followed by a 
+<em>required</em> year or
+year range in parentheses. When there are multiple authors
+you may want to add a statement of your particular 
+contributions. Terse is better, but the statement can be
+a paragraph (see Doxygen's manual for formatting details).
+Each author should be listed
+on their own line beginning with <code>@authors</code>,
+and new authors should always be added to the end of the
+list. In content that is not processed by Doxygen, such
+as XML or code that appears only in <code>.cc</code> files,
+please use <code>@author</code> and format the same way for
+uniformity, unless there is a good reason to do otherwise.</p>
+
+<p>When there is a single author, you may use the 
+<code>@author</code> command, but when a second author
+is added <em>all</em> the signatures must be changed to
+use the <code>@authors</code> command so that they will
+come out correctly grouped. As the second author, you are
+responsible for changing the first author's command to the
+plural form. In general, if you submit a PR that affects authorship,
+you are responsible for keeping the author list correct.
+For example, if you completely rewrite a class you should
+remove the original author if their contribution is gone.</p>
+
+<p>Code reviewers are responsible for verifying that any
+claims of authorship are reasonable, dated, and correctly
+formatted.</p>
 
 </div> 
 
