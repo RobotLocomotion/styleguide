@@ -5260,10 +5260,59 @@ interface points. Use the new interface point instead. If
 you cannot understand the directions, find the person who
 created the deprecation and ask them for help using the
 new interface point.</p>
+</div>
 
+<h3 id="Authorship_Comments">
+<span class="drake">Authorship Comments</span></h3>
 
+<span class="drake">
+<div class="summary">
+<p>Although there is no need for authorship comments in
+Drake, if you feel strongly that you want to sign your
+work you may do so as specified below.</p>
+</div>
 
-</div> 
+<div class="stylebody">
+
+<p>Drake is a large-team effort in which many programmers
+typically contribute to the same block of code, with no
+particular person claiming ownership. That is reflected
+in the alphabetized Drake
+<a href="https://drake.mit.edu/credits">Credits Page</a>,
+and you should definitely add yourself to that list. In
+addition, git maintains a history of all code modifications,
+and <code>git annotate</code> or <code>git blame</code>
+can be used to find out who did what when. So in most cases
+there is no need to add authorship details to the code.
+However, if you are particularly proud of a significant
+contribution, you can sign your beautiful creation
+with a Doxygen-formatted comment. Then your name
+will appear in the source code and in the generated
+Doxygen documentation.</p>
+
+<p>IMPORTANT NOTE: Copyright is a legal concept separate
+from authorship. Listing yourself as an author
+does <em>not</em> automatically confer copyright to you.</p>
+
+<p>The format for code-signing is:<pre>
+@authors Jane Doe (2016-2017) Original author.
+@authors Joe Schmoe (2018) Made thread-safe.
+@authors Drake team (see https://drake.mit.edu/credits).
+</pre>
+
+<p>The last line is mandatory, all the fields are required,
+and new authors should normally be added below existing ones.
+In content that is not processed by Doxygen, such as XML
+or code that appears only in <code>.cc</code> files, please
+use <code>@authors</code> and format the same way for
+uniformity, unless there is a good reason to do otherwise.</p>
+
+<p>If you submit a PR that affects authorship, you are
+responsible for updating the author list as appropriate. For
+example, if your contribution effectively removes an earlier
+author's contributions, you should remove that author.</p>
+</div>
+</span>
 
 <h2 id="Formatting">Formatting</h2>
 
