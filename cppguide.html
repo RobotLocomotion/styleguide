@@ -49,6 +49,10 @@ Rules specific to Drake <span class="drake">are highlighted like this</span> for
 clarity and easier maintainability.
 </p>
 
+<p class="drake">
+Drake does not use <a href="https://github.com/abseil/abseil-cpp">Abseil</a>;
+please ignore any suggestions or rules that regard Abseil.
+</p>
 
 
 <p>Note that this guide is not a C++ tutorial: we assume that
@@ -174,8 +178,10 @@ input.</p>
 <h2 id="C++_Version">C++ Version</h2>
 
 <p>
-Currently, code should target C++11, i.e., should not use C++14 or
-C++17 features. The C++ version targeted by this guide will advance
+Currently, code should target <span class="nondrake">
+C++11, i.e., should not use C++14 or C++17 features</span>
+<span class="drake">C++14 (<code>--std==c++14</code>)</span>.
+The C++ version targeted by this guide will advance
 (aggressively) over time.</p>
 
 <p>
@@ -184,7 +190,6 @@ the latest language version (currently C++17), as well as the rare
 cases where code has a different meaning in that latest version.
 Use of some C++ features is restricted or disallowed.  Do not use
 <a href="#Nonstandard_Extensions">non-standard extensions</a>.</p>
-
 
 
 <h2 id="Header_Files">Header Files</h2>
@@ -510,7 +515,9 @@ directories too.</p>
 <p>Note that the C compatibility headers such as <code>stddef.h</code>
 are essentially interchangeable with their C++ counterparts
 (<code>cstddef</code>)
-Either style is acceptable, but prefer consistency with existing code.</p>
+<span class="nondrake">Either style is acceptable</span>
+<span class="drake">Prefer <code>cstddef</code></span>, but prefer consistency
+with existing code.</p>
 
 <p>Within each section the includes should be ordered
 alphabetically. Note that older code might not conform to
@@ -993,13 +1000,6 @@ constraints on destructibility. The constraint on dynamic initialization still
 applies, though. In particular, a function-local static reference of the form
 <code>static T&amp; t = *new T;</code> is allowed.</p>
 
-<span class="drake">
-<p>Types wrapped within
-<a href="http://drake.mit.edu/doxygen_cxx/classdrake_1_1never__destroyed.html">drake::never_destroyed&lt;T&gt;</a>.
-are also considered trivially destructible (since their destructors are
-effectively ignored).</p>
-</span>
-
 <h4>Decision on initialization</h4>
 
 <p>Initialization is a more complex topic. This is because we must not only
@@ -1085,7 +1085,11 @@ does not make an observable difference. For example:</p>
   <li>Static variables of custom types: if you require static, constant data of
     a type that you need to define yourself, give the type a trivial destructor
     and a <code>constexpr</code> constructor.</li>
-  <li>If all else fails, you can create an object dynamically and never delete
+  <li class="drake"><a href="http://drake.mit.edu/doxygen_cxx/classdrake_1_1never__destroyed.html">drake::never_destroyed&lt;T&gt;</a>:
+    types wrapped by this template will effectively be made trivially
+    destructible (since their destructors are ignored).</li>
+  <li class="nondrake">If all else fails, you can create an object dynamically
+    and never delete
     it by binding the pointer to a function-local static pointer variable:
     <code>static const auto* const impl = new T(args...);</code> (If the
     initialization is more complex, it can be moved into a function or lambda
@@ -1395,15 +1399,6 @@ also omit <code>explicit</code>, in order to support copy-initialization
 move-only, or neither copyable nor movable. Support copying and/or
 moving if these operations are clear and meaningful for your type.</p>
 
-<p class="drake">A class should use
-<a href="https://github.com/RobotLocomotion/drake/blob/master/drake/common/drake_copyable.h"><code>drake/common/drake_copyable.h</code></a>
-macros (either <code>DRAKE_NO_COPY_NO_MOVE_NO_ASSIGN</code> or
-<code>DRAKE_DEFAULT_COPY_AND_MOVE_AND_ASSIGN</code>) whenever practical.
-When using the macros, the copy constructor and copy-assignment operator at
-least must be either deleted, defaulted, or implemented.  For discussion, see
-<a href="https://github.com/RobotLocomotion/drake/issues/4861">issue #4861</a>.
-</p>
-
 </div>
 
 <div class="stylebody">
@@ -1482,7 +1477,13 @@ encourage excessive copying, which can cause performance problems.</p>
 <div class="decision">
 
 <p>Every class's public interface should make explicit which copy and move
-operations the class supports. This should usually take the form of explicitly
+operations the class supports.
+<span class="drake">
+A class should use
+<a href="https://github.com/RobotLocomotion/drake/blob/master/common/drake_copyable.h"><code>drake/common/drake_copyable.h</code></a>
+macros (either <code>DRAKE_NO_COPY_NO_MOVE_NO_ASSIGN</code> or
+<code>DRAKE_DEFAULT_COPY_AND_MOVE_AND_ASSIGN</code>) whenever practical.
+Failing that, it</span> should usually take the form of explicitly
 declaring and/or deleting the appropriate operations in the <code>public</code>
 section of the declaration.</p>
 
@@ -1493,13 +1494,20 @@ Explicitly declaring or deleting all four copy/move operations is permitted,
 but not required. If you provide a copy or move assignment operator, you
 must also provide the corresponding constructor.</p>
 
-<pre>class Copyable {
+
+<pre>
+<span class="nondrake">class Copyable {
  public:
   Copyable(const Copyable&amp; rhs) = default;
   Copyable&amp; operator=(const Copyable&amp; rhs) = default;
 
   // The implicit move operations are suppressed by the declarations above.
-};
+};</span>
+
+<span class="drake">class CopyableAndMovable {
+ public:
+  DRAKE_DEFAULT_COPY_AND_MOVE_AND_ASSIGN(CopyableAndMovable)
+};</span>
 
 class MoveOnly {
  public:
@@ -1512,7 +1520,7 @@ class MoveOnly {
   MoveOnly&amp; operator=(const MoveOnly&amp;) = delete;
 };
 
-class NotCopyableOrMovable {
+<span class="nondrake">class NotCopyableOrMovable {
  public:
   // Not copyable or movable
   NotCopyableOrMovable(const NotCopyableOrMovable&amp;) = delete;
@@ -1524,7 +1532,13 @@ class NotCopyableOrMovable {
   NotCopyableOrMovable(NotCopyableOrMovable&amp;&amp;) = delete;
   NotCopyableOrMovable&amp; operator=(NotCopyableOrMovable&amp;&amp;)
       = delete;
+};</span>
+
+<span class="drake">class NotCopyableOrMovable {
+ public:
+  DRAKE_NO_COPY_NO_MOVE_NO_ASSIGN(NotCopyableOrMovable)
 };
+</span>
 </pre>
 
 <p>These declarations/deletions can be omitted only if they are obvious: for
@@ -1542,7 +1556,8 @@ copy/move operations).</p>
 copying/moving is unclear to a casual user, or if it incurs unexpected
 costs. Move operations for copyable types are strictly a performance
 optimization and are a potential source of bugs and complexity, so
-avoid defining them unless they are significantly more efficient than
+avoid <span class="drake">explicitly</span> defining them unless they are
+significantly more efficient than
 the corresponding copy operations.  If your type provides copy operations, it is
 recommended that you design your class so that the default implementation of
 those operations is correct. Remember to review the correctness of any
@@ -3130,6 +3145,9 @@ for diagnostic output, and the libraries in
 or the equivalent are usually a
 better choice than <code>std::stringstream</code>.</p>
 
+<p class="drake">Use
+<a href="https://github.com/RobotLocomotion/drake/blob/master/common/text_logging.h"><code>drake/common/text_logging.h</code></a> when possible.
+
 <p>Avoid using streams for I/O that faces external users or
 handles untrusted data. Instead, find and use the appropriate
 templating libraries to handle issues like internationalization,
@@ -3214,7 +3232,8 @@ types, use pre-increment.</p>
 const.</p>
 <ul class="drake">
   <li>A class member variable <em>must</em> be declared <code>const</code>
-  if it is not modified after the class is constructed.</li>
+if the class is neither copyable nor movable and it is not modified after the
+class is constructed.</li>
   <li><p>You <em>must not</em> use <code>const</code> in a function
 declaration where it adds no meaning. That occurs in pass-by-value parameter
 declarations, where <code>const int i</code> and <code>int i</code> mean the
@@ -3229,14 +3248,15 @@ see <a href="http://www.lcdf.org/c%2B%2B/clause13.html">Overloadable
 declarations</a>. (This applies to <code>volatile</code> also.)</p>
 <p>If you want to declare and define a function in one place, you have
 several options:</p>
-<ul>
-<li>Forgo marking the parameters as <code>const</code> (not a great loss for
+  <ul>
+    <li>Forgo marking the parameters as <code>const</code> (not a great loss for
 short functions defined inline), or</li>
-<li>create some <code>const</code> local variables initialized to the supplied
-parameter values (likely to be optimized away by the compiler), or</li>
-<li>split the declaration and definition (be sure to add the <code>inline</code>
-keyword if the function would otherwise have been implicitly inlined).</li>
-</ul>
+    <li>create some <code>const</code> local variables initialized to the
+supplied parameter values (likely to be optimized away by the compiler), or</li>
+    <li>split the declaration and definition (be sure to add the
+<code>inline</code> keyword if the function would otherwise have been
+implicitly inlined).</li>
+  </ul></li>
 </ul>
 
 </div>
@@ -3533,6 +3553,10 @@ problems of printing, comparisons, and structure alignment.</p>
     for fast simple conversions,
   
   or <a href="#Streams"><code>std::ostream</code></a>.</p>
+
+  <p class="drake">Use <a href="https://github.com/fmtlib/fmt"><code>fmt</code></a>
+  by including <code>fmt/format.h</code> and <code>fmt/ostream</code>, as this
+  library will soon be incorported into <code>std</code>.</p>
 
   <p>Unfortunately, the <code>PRI</code> macros are the only portable way to
   specify a conversion for the standard bitwidth typedefs (e.g.
@@ -5044,8 +5068,10 @@ boilerplate. Choose the appropriate boilerplate for the
 license used by the project (for example, Apache 2.0,
 BSD, LGPL, GPL).</p>
 
-<p>If you make significant changes to a file with an
-author line, consider deleting the author line.
+<p>If you make significant changes to a file with an author line,
+<span class="nondrake">consider deleting the author line.</span>
+<span class="drake">see the
+<a href="#Authorship_Comments">Authorship Comments</a> section below.</span>
 New files should usually not contain copyright notice or
 author line.</p>
 
