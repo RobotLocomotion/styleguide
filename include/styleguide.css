@@ -54,13 +54,16 @@ td, th {
 }
 
 code, samp, var {
-  background-color:#FAFAFA;
   white-space: nowrap
+}
+
+code, samp, var, pre {
+  /* Use effective color from GitHub. */
+  background-color:#F3F3F3;
 }
 
 pre {
   padding:6px 10px;
-  background-color:#FAFAFA;
   border:1px solid #bbb;
   overflow:auto;
 }
