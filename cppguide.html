@@ -2613,6 +2613,78 @@ rules apply. Such a reference is called forwarding reference.</p>
 
 </div> 
 
+<div class="drake">
+<h3 id="Pass_By_Value">Pass by Value</h3>
+<p>
+"Consider pass-by-value for copyable parameters that are cheap to move and always copied"
+(Item 41 of Scott Meyers' <a href="http://shop.oreilly.com/product/0636920033707.do?cmp=af-code-books-video-product_cj_0636920033707_7708709">Effective Modern C++11</a>).
+</p>
+
+<p>As an example:</p>
+<pre>
+class Foo() {
+ public:
+  Foo(const std::string& str) : str_{str} { }
+ private:
+  std::string str_;
+};
+
+std::string s{"example"};
+std::string make_str();  // Function returning a string.
+
+Foo f1{s};           // s is copied into f1.str_
+Foo f2{make_str()};  // f2.str_ is *copy*-constructed from the return value of make_str().
+</pre>
+
+<p>
+The constructor of <code>Foo</code> takes a const reference
+of <code>std::string</code> which is <em>copied</em> into the class
+field <code>str_</code>. In each of <code>Foo f1{s}</code>
+and <code>Foo f2{make_str()}</code>, there is one copy-construction
+of <code>std::string</code>
+in <code>Foo::Foo</code>.
+The constructor can be refactored as:
+</p>
+
+<pre>
+#include &lt;utility&gt; // for std::move
+
+class Foo() {
+ public:
+  Foo(std::string str) : str_{std::move(str)} { }
+ private:
+  std::string str_;
+};
+
+Foo f1{s};           // s is copied and *moved* into f1.str_
+Foo f2{make_str()};  // f2.str_ is *move*-constructed from the return value of make_str().
+</pre>
+
+<p>
+When <code>Foo f1{s}</code> is executed, the
+parameter <code>str</code> is <em>copy</em>-constructed from the
+argument <code>s</code>, then it is <em>moved</em> into the class
+field <code>str_</code>.
+</p>
+
+<p>When <code>Foo f2{make_str()}</code> is
+executed, the parameter <code>str</code> is <em>move</em>-constructed
+from the returned rvalue of <code>make_str()</code>, then it
+is <em>moved</em> into the class field <code>str_</code>. Note that we
+replace a copy-construction with a move-construction which is cheaper
+for <code>std::string</code>.
+</p>
+
+<p>
+References:
+<ul>
+  <li><a href="https://web.archive.org/web/20140205194657/http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/">Want Speed? Pass by Value.</a></li>
+  <li><a href="https://clang.llvm.org/extra/clang-tidy/checks/modernize-pass-by-value.html#modernize-pass-by-value">clang-tidy: modernize-pass-by-value</a></li>
+  <li><a href="https://stackoverflow.com/questions/10231349/are-the-days-of-passing-const-stdstring-as-a-parameter-over">Stack Overflow: Are the days of passing const std::string& as a parameter over?</a></li>
+</ul>
+</p>
+</div>
+
 <h3 id="Friends">Friends</h3>
 
 <div class="summary">
