@@ -4603,6 +4603,66 @@ using foo::Bar;
 </div>
 </div> 
 
+<div class="drake">
+<h3 id="Pass_By_Value">Pass by Value</h3>
+<p>
+"Consider pass-by-value for copyable parameters that are cheap to move and always copied"
+(Item 41 of Scott Meyers' <a href="http://shop.oreilly.com/product/0636920033707.do?cmp=af-code-books-video-product_cj_0636920033707_7708709">Effective Modern C++11</a>).
+</p>
+
+<p>Consider the following example to understand why this can be useful.</p>
+<pre>
+class Foo() {
+public:
+    Foo(const std::string& str) : str_{str} { }
+private:
+    std::string str_;
+};
+
+std::string s{"example"};
+std::string make_str();  // Function returning a string.
+
+Foo f1{s};           // s is copied into f1.str_
+Foo f2{make_str()};  // f2.str_ is *copy*-constructed from the return value of make_str().
+</pre>
+
+<p>
+The constructor of <code>Foo</code> takes a const reference
+of <code>std::string</code> which is <em>copied</em> into the class
+field <code>str_</code>. In each of <code>Foo f1{s}</code>
+and <code>Foo f2{make_str()}</code>, there is one copy-construction
+of <code>std::string</code>
+in <code>Foo::Foo</code>. The <code>Foo</code> class can be refactored
+by following the suggestion.
+</p>
+
+<pre>
+#include <utility> // for std::move
+
+class Foo() {
+public:
+    Foo(std::string str) : str_{std::move(str)} { }
+private:
+    std::string str_;
+};
+
+Foo f1{s};           // s is copied and *moved* into f1.str_
+Foo f2{make_str()};  // f2.str_ is *move*-constructed from the return value of make_str().
+</pre>
+
+<p>
+When <code>Foo f1{s}</code> is executed, the
+parameter <code>str</code> is <em>copy</em>-constructed from the
+argument <code>s</code>, then it is <em>moved</em> into the class
+field <code>str_</code>.  When <code>Foo f2{make_str()}</code> is
+executed, the parameter <code>str</code> is <em>move</em>-constructed
+from the return value of <code>make_str()</code> (rvalue), then it
+is <em>moved</em> into the class field <code>str_</code>. Note that we
+replace a copy-construction with a move-construction which is known to
+be cheaper for <code>std::string</code>.
+</p>
+</div>
+
 <h2 id="Naming">Naming</h2>
 
 <p>The most important consistency rules are those that govern
