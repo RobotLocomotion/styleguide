@@ -37,6 +37,9 @@ Making New Changes
 
 Branch, update, and PR as you would any other Drake change.
 
+Ensure that Drake is updated. See [Updating Drake](#updating-drake) for more
+information.
+
 Pulling Upstream Changes
 ------------------------
 
@@ -96,6 +99,23 @@ manner.  In creating the PR, double-check that you are PR'ing against
 `RobotLocomotion/styleguide`, not `google/styleguide`.
 
 You should add [all of the platform reviewers](http://drake.mit.edu/developers.html#review-process) to the resulting PR.
+
+Ensure that Drake is updated. See [Updating Drake](#updating-drake) for more
+information.
+
+<a id="updating-drake"/>
+
+Updating Drake
+--------------
+
+Whenever a change to `styleguide` is made, be sure to submit a PR to `drake` to
+bump the `styleguide` SHA. PRs to `drake` should marked as `do not merge` until
+the `styleguide` PR is merged, and the SHA refers only to the `gh-pages`
+branch.
+
+If there are changes to code (e.g. `cpplint`), be sure the `drake` PR is
+submitted *before* full review so that the `styleguide` changes can be vetted
+first.
 
 --
 
