@@ -37,6 +37,8 @@ Making New Changes
 
 Branch, update, and PR as you would any other Drake change.
 
+Once the `styleguide` PR lands, submit a PR to `drake` to bump its SHA.
+
 Pulling Upstream Changes
 ------------------------
 
@@ -96,6 +98,9 @@ manner.  In creating the PR, double-check that you are PR'ing against
 `RobotLocomotion/styleguide`, not `google/styleguide`.
 
 You should add [all of the platform reviewers](http://drake.mit.edu/developers.html#review-process) to the resulting PR.
+
+As above, once the `styleguide` PR lands, submit a PR to `drake` to bump its
+SHA.
 
 --
 
