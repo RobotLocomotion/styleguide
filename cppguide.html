@@ -2452,6 +2452,12 @@ you can download
 use
 <code>GTEST_TEST(Group, Name)</code> instead of <code>TEST(Group,
 Name)</code>. (<a href="https://github.com/RobotLocomotion/drake/issues/2181">#2181</a>)</p>
+<p>Never use
+<a href="https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#death-tests">death tests</a>
+(<code>EXPECT_DEATH</code>, <code>ASSERT_DEATH</code>, ...)
+except in the extremely rare cases where C++ exceptions are unavailable (e.g.,
+when testing a function with C ABI linkage that cannot propagate exceptions).
+</p> 
 </div>
 
 </div>
