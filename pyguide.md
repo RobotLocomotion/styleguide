@@ -4,8 +4,49 @@ Prefer only GitHub-flavored Markdown in external text.
 See README.md for details.
 -->
 
+<!--
+Drake authors:
+This should be synchronized with the relevant styles in
+`include/styleguide.css`.
+-->
+
+<style>
+.drake {
+  font-weight: bold;
+  color: purple;
+}
+
+.nondrake {
+  text-decoration: line-through;
+  color: DeepPink;
+}
+</style>
+
 # Google Python Style Guide
 
+<p class="drake">Forked and adapted from the
+<a href="https://google.github.io/styleguide/pyguide.html">Google style
+guide</a>.  Many references to Google are deliberately left in to minimize
+merge conflicts.</p>
+
+<p>Where Drake-specific rules contradict previous Google conventions, the text
+is retained for reference but otherwise marked <span class="nondrake">with a
+strikethrough</span>. The style is intentionally difficult to read in the
+normal course of perusal. Copying-and-pasting, or even simply highlighting the
+text, will facilitate reading if necessary.
+
+Rules specific to Drake <span class="drake">are highlighted like this</span> for
+clarity and easier maintainability.
+</p>
+
+<p class="drake">
+A large number of sections are intentially hidden, as they do not apply to
+Drake development. For all other aspects of code style, please see Drake's
+<a href="https://drake.mit.edu/code_style_guide.html#python-style">
+Code Style Guide</a> documentation page.
+</p>
+
+<!--
 
 <a id="background"></a>
 ## 1 Background
@@ -1535,6 +1576,8 @@ This line is used by the kernel to find the Python interpreter, but is ignored
 by Python when importing modules. It is only necessary on a file that will be
 executed directly.
 
+-->
+
 <a id="s3.8-comments"></a>
 <a id="comments"></a>
 ### 3.8 Comments and Docstrings
@@ -1563,9 +1606,11 @@ docstrings below.
 <a id="comments-in-modules"></a>
 #### 3.8.2 Modules
 
+<span class="nondrake">
 Every file should contain license boilerplate. Choose the appropriate
 boilerplate for the license used by the project (for example, Apache 2.0, BSD,
 LGPL, GPL)
+</span>
 
 <a id="s3.8.3-functions-and-methods"></a>
 <a id="functions-and-methods"></a>
@@ -1609,6 +1654,8 @@ The description should include required type(s) if the code does not contain
 a corresponding type annotation.<br>
 If a function accepts `*foo` (variable length argument lists) and/or `**bar`
 (arbitrary keyword arguments), they should be listed as `*foo` and `**bar`.
+<br>
+<span class="drake">Obvious parameters do not need to be documented.</span>
 
 <a id="doc-function-returns"></a>
 [*Returns:* (or *Yields:* for generators)](#doc-function-returns)
@@ -1663,6 +1710,8 @@ If your class has public attributes, they should be documented here in an
 `Attributes` section and follow the same formatting as a
 [function's `Args`](#doc-function-args) section.
 
+<span class="drake">Attributes are not always documented for classes.</span>
+
 ```python
 class SampleClass(object):
     """Summary of class here.
@@ -1683,6 +1732,8 @@ class SampleClass(object):
     def public_method(self):
         """Performs operation blah."""
 ```
+
+<!--
 
 <a id="comments-in-block-and-inline"></a>
 <a id="s3.8.5-comments-in-block-and-inline"></a>
@@ -1714,7 +1765,10 @@ knows Python (though not what you're trying to do) better than you do.
 # the next element is i+1
 ```
 
+-->
+
 <!-- The next section is copied from the C++ style guide. -->
+<!--
 <a id="s3.8.6-punctuation-spelling-and-grammar"></a>
 <a id="punctuation-spelling-and-grammar"></a>
 #### 3.8.6 Punctuation, Spelling and Grammar
@@ -2735,4 +2789,4 @@ style is also important. If code you add to a file looks drastically different
 from the existing code around it, it throws readers out of their rhythm when
 they go to read it. Avoid this.
 
-
+-->
