@@ -4,11 +4,52 @@ Prefer only GitHub-flavored Markdown in external text.
 See README.md for details.
 -->
 
+<!--
+Drake authors:
+This should be synchronized with the relevant styles in
+`include/styleguide.css`.
+-->
+
+<style>
+.drake {
+  font-weight: bold;
+  color: purple;
+}
+
+.nondrake {
+  text-decoration: line-through;
+  color: DeepPink;
+}
+</style>
+
 # Google Python Style Guide
 
+<p class="drake">Forked and adapted from the
+<a href="https://google.github.io/styleguide/pyguide.html">Google style
+guide</a>.  Many references to Google are deliberately left in to minimize
+merge conflicts.</p>
+
+<p>Where Drake-specific rules contradict previous Google conventions, the text
+is retained for reference but otherwise marked <span class="nondrake">with a
+strikethrough</span>. The style is intentionally difficult to read in the
+normal course of perusal. Copying-and-pasting, or even simply highlighting the
+text, will facilitate reading if necessary.
+
+Rules specific to Drake <span class="drake">are highlighted like this</span> for
+clarity and easier maintainability.
+</p>
+
+<p class="drake">At present, Drake only adheres to Section 3.8 of this
+document. For all other aspects of code style, please see Drake's
+<a href="https://drake.mit.edu/code_style_guide.html#python-style">
+Code Style Guide</a> documentation page.
+</p>
 
 <a id="background"></a>
 ## 1 Background
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Python is the main dynamic language used at Google. This style guide is a list
 of *dos and don'ts* for Python programs.
@@ -24,9 +65,15 @@ auto-formatter to avoid arguing over formatting.
 <a id="python-language-rules"></a>
 ## 2 Python Language Rules
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 <a id="s2.1-lint"></a>
 <a id="lint"></a>
 ### 2.1 Lint
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Run `pylint` over your code.
 
@@ -106,6 +153,9 @@ last does not enforce that the arguments are actually unused.
 <a id="imports"></a>
 ### 2.2 Imports
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use `import` statements for packages and modules only, not for individual
 classes or functions. Note that there is an explicit exemption for imports from
 the [typing module](#typing-imports).
@@ -155,6 +205,9 @@ Imports from the [typing module](#typing-imports) are exempt from this rule.
 <a id="s2.3-packages"></a>
 <a id="packages"></a>
 ### 2.3 Packages
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Import each module using the full pathname location of the module.
 
@@ -212,6 +265,9 @@ package named `jodie`, not a local `jodie.py`.
 <a id="s2.4-exceptions"></a>
 <a id="exceptions"></a>
 ### 2.4 Exceptions
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Exceptions are allowed but must be used carefully.
 
@@ -325,6 +381,9 @@ Exceptions must follow certain conditions:
 <a id="global-variables"></a>
 ### 2.5 Global variables
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Avoid global variables.
 
 <a id="s2.5.1-definition"></a>
@@ -359,6 +418,9 @@ through public module-level functions. See [Naming](#s3.16-naming) below.
 <a id="s2.6-nested"></a>
 <a id="nested"></a>
 ### 2.6 Nested/Local/Inner Classes and Functions
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Nested local functions or classes are fine when used to close over a local
 variable. Inner classes are fine.
@@ -397,6 +459,9 @@ can still be accessed by tests.
 <a id="s2.7-list_comprehensions"></a>
 <a id="list_comprehensions"></a>
 ### 2.7 Comprehensions & Generator Expressions
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Okay to use for simple cases.
 
@@ -481,6 +546,9 @@ No:
 <a id="default-iterators-and-operators"></a>
 ### 2.8 Default Iterators and Operators
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use default iterators and operators for types that support them, like lists,
 dictionaries, and files.
 
@@ -532,6 +600,9 @@ No:   for key in adict.keys(): ...
 <a id="generators"></a>
 ### 2.9 Generators
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use generators as needed.
 
 <a id="s2.9.1-definition"></a>
@@ -562,6 +633,9 @@ functions.
 <a id="s2.10-lambda-functions"></a>
 <a id="lambda-functions"></a>
 ### 2.10 Lambda Functions
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Okay for one-liners.
 
@@ -599,6 +673,9 @@ module instead of lambda functions. For example, prefer `operator.mul` to
 <a id="conditional-expressions"></a>
 ### 2.11 Conditional Expressions
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Okay for one-liners.
 
 <a id="s2.11.1-definition"></a>
@@ -628,6 +705,9 @@ statement.
 <a id="s2.12-default-argument-values"></a>
 <a id="default-argument-values"></a>
 ### 2.12 Default Argument Values
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Okay in most cases.
 
@@ -687,6 +767,9 @@ No:  def foo(a, b=FLAGS.my_thing):  # sys.argv has not yet been parsed...
 <a id="s2.13-properties"></a>
 <a id="properties"></a>
 ### 2.13 Properties
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Use properties for accessing or setting data where you would normally have used
 simple, lightweight accessor or setter methods.
@@ -773,6 +856,9 @@ Yes: import math
 <a id="truefalse-evaluations"></a>
 ### 2.14 True/False evaluations
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use the "implicit" false if at all possible.
 
 <a id="s2.14.1-definition"></a>
@@ -855,6 +941,9 @@ Use the "implicit" false if at all possible, e.g., `if foo:` rather than
 <a id="deprecated-language-features"></a>
 ### 2.15 Deprecated Language Features
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use string methods instead of the `string` module where possible. Use function
 call syntax instead of `apply`. Use list comprehensions and `for` loops instead
 of `filter` and `map` when the function argument would have been an inlined
@@ -893,6 +982,9 @@ No:  words = string.split(foo, ':')
 <a id="s2.16-lexical-scoping"></a>
 <a id="lexical-scoping"></a>
 ### 2.16 Lexical Scoping
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Okay to use.
 
@@ -953,6 +1045,9 @@ Okay to use.
 <a id="s2.17-function-and-method-decorators"></a>
 <a id="function-and-method-decorators"></a>
 ### 2.17 Function and Method Decorators
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Use decorators judiciously when there is a clear advantage. Avoid
 `@staticmethod` and limit use of `@classmethod`.
@@ -1025,6 +1120,9 @@ routine that modifies necessary global state such as a process-wide cache.
 <a id="threading"></a>
 ### 2.18 Threading
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Do not rely on the atomicity of built-in types.
 
 While Python's built-in data types such as dictionaries appear to have atomic
@@ -1041,6 +1139,9 @@ primitives. Learn about the proper use of condition variables so you can use
 <a id="s2.19-power-features"></a>
 <a id="power-features"></a>
 ### 2.19 Power Features
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Avoid these features.
 
@@ -1078,6 +1179,9 @@ and `enum`).
 <a id="s2.20-modern-python"></a>
 <a id="modern-python"></a>
 ### 2.20 Modern Python: Python 3 and from \_\_future\_\_ imports
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Python 3 is here! While not every project is ready to
 use it yet, all code should be written to be 3 compatible (and tested under
@@ -1145,6 +1249,9 @@ cleaner and life easier.
 <a name="typed-code"></a>
 ### 2.21 Type Annotated Code
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 You can annotate Python 3 code with type hints according to
 [PEP-484](https://www.python.org/dev/peps/pep-0484/), and type-check the code at
 build time with a type checking tool like
@@ -1200,12 +1307,18 @@ This highly depends on the complexity of your project. Give it a try.
 <a id="semicolons"></a>
 ### 3.1 Semicolons
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Do not terminate your lines with semicolons, and do not use semicolons to put
 two statements on the same line.
 
 <a id="s3.2-line-length"></a>
 <a id="line-length"></a>
 ### 3.2 Line length
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Maximum line length is *80 characters*.
 
@@ -1283,6 +1396,9 @@ above; see the [indentation](#s3.4-indentation) section for explanation.
 <a id="parentheses"></a>
 ### 3.3 Parentheses
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Use parentheses sparingly.
 
 It is fine, though not required, to use parentheses around tuples. Do not use
@@ -1318,6 +1434,9 @@ No:  if (x):
 <a id="s3.4-indentation"></a>
 <a id="indentation"></a>
 ### 3.4 Indentation
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Indent your code blocks with *4 spaces*.
 
@@ -1411,6 +1530,9 @@ No:    golomb4 = [
 <a id="blank-lines"></a>
 ### 3.5 Blank Lines
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Two blank lines between top-level definitions, be they function or class
 definitions. One blank line between method definitions and between the `class`
 line and the first method. No blank line following a `def` line. Use single
@@ -1419,6 +1541,9 @@ blank lines as you judge appropriate within functions or methods.
 <a id="s3.6-whitespace"></a>
 <a id="whitespace"></a>
 ### 3.6 Whitespace
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Follow standard typographic rules for the use of spaces around punctuation.
 
@@ -1526,6 +1651,9 @@ No:
 <a id="shebang-line"></a>
 ### 3.7 Shebang Line
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Most `.py` files do not need to start with a `#!` line. Start the main file of a
 program with
 `#!/usr/bin/python` with an optional single digit `2` or `3` suffix per
@@ -1562,6 +1690,9 @@ docstrings below.
 <a id="s3.8.2-comments-in-modules"></a>
 <a id="comments-in-modules"></a>
 #### 3.8.2 Modules
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Every file should contain license boilerplate. Choose the appropriate
 boilerplate for the license used by the project (for example, Apache 2.0, BSD,
@@ -1609,6 +1740,8 @@ The description should include required type(s) if the code does not contain
 a corresponding type annotation.<br>
 If a function accepts `*foo` (variable length argument lists) and/or `**bar`
 (arbitrary keyword arguments), they should be listed as `*foo` and `**bar`.
+<br>
+<span class="drake">Obvious parameters do not need to be documented.</span>
 
 <a id="doc-function-returns"></a>
 [*Returns:* (or *Yields:* for generators)](#doc-function-returns)
@@ -1662,6 +1795,8 @@ Classes should have a docstring below the class definition describing the class.
 If your class has public attributes, they should be documented here in an
 `Attributes` section and follow the same formatting as a
 [function's `Args`](#doc-function-args) section.
+
+<span class="drake">Attributes are not always documented for classes.</span>
 
 ```python
 class SampleClass(object):
@@ -1735,6 +1870,9 @@ punctuation, spelling, and grammar help with that goal.
 <a id="s3.9-classes"></a>
 <a id="classes"></a>
 ### 3.9 Classes
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 If a class inherits from no other base classes, explicitly inherit from
 `object`. This also applies to nested classes.
@@ -1859,6 +1997,9 @@ Don't do this.
 <a id="files-and-sockets"></a>
 ### 3.11 Files and Sockets
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Explicitly close files and sockets when done with them.
 
 Leaving files, sockets or other file-like objects open unnecessarily has many
@@ -1908,6 +2049,9 @@ with contextlib.closing(urllib.urlopen("http://www.python.org/")) as front_page:
 <a id="s3.12-todo-comments"></a>
 <a id="todo-comments"></a>
 ### 3.12 TODO Comments
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 Use `TODO` comments for code that is temporary, a short-term solution, or
 good-enough but not perfect.
@@ -2023,6 +2167,9 @@ from otherproject.ai import soul
 <a id="statements"></a>
 ### 3.14 Statements
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Generally only one statement per line.
 
 However, you may put the result of a test on the same line as the test only if
@@ -2054,6 +2201,9 @@ No:
 <a id="access-control"></a>
 ### 3.15 Access Control
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 If an accessor function would be trivial, you should use public variables
 instead of accessor functions to avoid the extra cost of function calls in
 Python. When more functionality is added you can use `property` to keep the
@@ -2070,6 +2220,9 @@ aware of the change in complexity.
 <a id="s3.16-naming"></a>
 <a id="naming"></a>
 ### 3.16 Naming
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 `module_name`,
 `package_name`,
@@ -2229,6 +2382,9 @@ unittests. Lint warnings take care of invalid access to protected members.
 <a id="main"></a>
 ### 3.17 Main
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Even a file meant to be used as an executable should be importable and a mere
 import should not have the side effect of executing the program's main
 functionality. The main functionality should be in a `main()` function.
@@ -2253,6 +2409,9 @@ should not be executed when the file is being `pydoc`ed.
 <a id="function-length"></a>
 ### 3.18 Function length
 
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
+
 Prefer small and focused functions.
 
 We recognize that long functions are sometimes appropriate, so no hard limit is
@@ -2273,6 +2432,9 @@ up the function into smaller and more manageable pieces.
 <a id="s3.19-type-annotations"></a>
 <a id="type-annotations"></a>
 ### 3.19 Type Annotations
+
+<span class="drake">This section is not strictly followed in Drake. Please
+refer to Drake's Python Style Guide mentioned above.</span>
 
 <a id="typing-general"></a>
 <a id="s3.19.1-general"></a>
