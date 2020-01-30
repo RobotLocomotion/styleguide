@@ -40,11 +40,7 @@ Relevant Pages
 The relevant modified style guides used by Drake are:
 
 * [C++ Style Guide](./cppguide.html)
-
-<!--
-TODO(eric): Enable this once Python guide is used.
 * [Python Style Guide](./pyguide.html) (*generation required*)
--->
 
 Making New Changes
 ------------------
