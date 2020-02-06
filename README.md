@@ -40,6 +40,20 @@ Branch, update, and PR as you would any other Drake change.
 Ensure that Drake is updated. See [Updating Drake](#updating-drake) for more
 information.
 
+Previewing Changes
+------------------
+
+Generally, you should be able to preview HTML changes without generating.
+
+To preview changes for generated files, you can view them locally by running
+this script which will indicate necessary prereqs:
+
+    ./preview_site_jekyll.py
+
+You can alternatively preview them on your own fork.
+
+<!-- TODO(eric): Document this workflow. -->
+
 Pulling Upstream Changes
 ------------------------
 
