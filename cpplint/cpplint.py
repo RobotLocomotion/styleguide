@@ -5377,6 +5377,9 @@ def ExpectingFunctionArgs(clean_lines, linenum):
 
 _HEADERS_CONTAINING_TEMPLATES = (
     ('<array>', ('array',)),
+    ('<atomic>', ('atomic',)),
+    ('<bitset>', ('bitset',)),
+    ('<complex>', ('complex',)),
     ('<deque>', ('deque',)),
     ('<functional>', ('unary_function', 'binary_function',
                       'plus', 'minus', 'multiplies', 'divides', 'modulus',
@@ -5395,6 +5398,7 @@ _HEADERS_CONTAINING_TEMPLATES = (
                       'const_mem_fun_ref_t', 'const_mem_fun1_ref_t',
                       'mem_fun_ref',
                      )),
+    ('<initializer_list>', ('initializer_list',)),
     ('<limits>', ('numeric_limits',)),
     ('<list>', ('list',)),
     ('<map>', ('map', 'multimap',)),

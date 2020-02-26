@@ -1091,6 +1091,50 @@ class CpplintTest(CpplintTestBase):
         'Add #include <array> for array<>'
         '  [build/include_what_you_use] [4]')
     self.TestIncludeWhatYouUse(
+        """#include <atomic>
+           std::atomic<int> A;
+        """,
+        '')
+    self.TestIncludeWhatYouUse(
+        """#include <string>
+           std::atomic<int> A;
+        """,
+        'Add #include <atomic> for atomic<>'
+        '  [build/include_what_you_use] [4]')
+    self.TestIncludeWhatYouUse(
+        """#include <bitset>
+           std::bitset<4> A;
+        """,
+        '')
+    self.TestIncludeWhatYouUse(
+        """#include <string>
+           std::bitset<4> A;
+        """,
+        'Add #include <bitset> for bitset<>'
+        '  [build/include_what_you_use] [4]')
+    self.TestIncludeWhatYouUse(
+        """#include <complex>
+           std::complex<float> A;
+        """,
+        '')
+    self.TestIncludeWhatYouUse(
+        """#include <string>
+           std::complex<double> A;
+        """,
+        'Add #include <complex> for complex<>'
+        '  [build/include_what_you_use] [4]')
+    self.TestIncludeWhatYouUse(
+        """#include <initializer_list>
+           std::initializer_list<int> A;
+        """,
+        '')
+    self.TestIncludeWhatYouUse(
+        """#include <string>
+           std::initializer_list<int> A;
+        """,
+        'Add #include <initializer_list> for initializer_list<>'
+        '  [build/include_what_you_use] [4]')
+    self.TestIncludeWhatYouUse(
         """#include <optional>
            std::optional<int> A;
         """,
