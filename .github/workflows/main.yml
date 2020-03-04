@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - gh-pages
+
+  pull_request:
+    branches:
+      - gh-pages
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+ 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install --disable-pip-version-check -r cpplint/requirements.txt
+      - run: python cpplint/cpplint_unittest.py
+
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-18.04     
+        python-version:
+          - 2.7  # At least while upstream supports it and therefore we use six.
+          - 3.6
+          - 3.7
+          - 3.8  # Homebrew will switch to this soon.
+        exclude:
+          - os: macos-latest
+            python-version: 3.6
+          - os: ubuntu-18.04
+            python-version: 3.7
+          - os: ubuntu-18.04
+            python-version: 3.8
+    
+      fail-fast: false

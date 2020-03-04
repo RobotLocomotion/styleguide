@@ -1,6 +1,8 @@
 Drake Style Guide
 =================
 
+![](https://github.com/RobotLocomotion/styleguide/workflows/CI/badge.svg?branch=gh-pages)
+
 This repository is a fork of Google's style guide.  Drake's C++ style is a
 small deviation from Google's, and approximately tracks Google's latest style
 guidance at a small delay.
