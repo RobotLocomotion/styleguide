@@ -1588,7 +1588,8 @@ inline comments.
 <span class="drake">
 In general, the semantic rules outlined below should be enforced by reviewers.
 However, the formatting (e.g. indentations, lines, etc.) will be enforced by
-automated lint tooling (e.g. `pycodestyle`).
+automated lint tooling (e.g. `pycodestyle`), and should not be remarked upon by
+reviewers.
 </span>
 
 <a id="s3.8.1-comments-in-doc-strings"></a>
@@ -1629,7 +1630,7 @@ In this section, "function" means a method, function, or generator.
 
 A function must have a docstring, unless it meets all of the following criteria:
 
--   not externally visible
+-   <span class="nondrake">not externally visible</span>
 -   very short
 -   obvious
 
