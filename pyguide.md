@@ -1618,7 +1618,7 @@ first line.
 </span>
 
 <span class="drake">
-Examples of accepted docstring line formatting:
+Examples of docstring line formatting that are good:
 </span>
 
 <!-- N.B. This code block is Drake-only. -->
@@ -1647,7 +1647,7 @@ def hello_world_n_times(n):
 ```
 
 <span class="drake">
-An example of docstring line formatting that **is not** accepted:
+Examples of docstring line formatting that **are not** accepted:
 </span>
 
 <!-- N.B. This code block is Drake-only. -->
@@ -1716,7 +1716,8 @@ Sections should be indented two spaces, except for the heading.
 [*Args:*](#doc-function-args)
 :   List each parameter by name. A description should follow the name, and be
 separated by a colon and a space. If the description is too long to fit on a
-single 80-character line, use a hanging indent of 2 or 4 spaces (be
+single 80-character <span class="drake">(or 79-character)</span> line, use a
+hanging indent of 2 or 4 spaces (be
 consistent with the rest of the file).<br>
 The description should include required type(s) if the code does not contain
 a corresponding type annotation.<br>
@@ -1841,7 +1842,7 @@ knows Python (though not what you're trying to do) better than you do.
 -->
 
 <!-- The next section is copied from the C++ style guide. -->
-<!--
+
 <a id="s3.8.6-punctuation-spelling-and-grammar"></a>
 <a id="punctuation-spelling-and-grammar"></a>
 #### 3.8.6 Punctuation, Spelling and Grammar
@@ -1859,6 +1860,7 @@ using a comma when you should be using a semicolon, it is very important that
 source code maintain a high level of clarity and readability. Proper
 punctuation, spelling, and grammar help with that goal.
 
+<!--
 <a id="s3.9-classes"></a>
 <a id="classes"></a>
 ### 3.9 Classes
