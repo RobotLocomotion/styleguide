@@ -1607,8 +1607,66 @@ double-quote `"""` format for docstrings (per [PEP
 A docstring should be organized as a summary line (one physical line) terminated
 by a period, question mark, or exclamation point, followed by a blank line,
 followed by the rest of the docstring starting at the same cursor position as
-the first quote of the first line.</span>
-<span class="drake">Summary lines are not required in Drake Python code.</span>
+the first quote of the first line.
+</span>
+<span class="drake">
+Docstrings do not need summary lines (as described in striked-out text);
+however, single line comments should be on the same line with the triple
+quotes, and multiline comments should *always* start on the line after the
+opening quotes, starting at the same cursor position as the first quote of the
+first line.
+</span>
+
+<span class="drake">
+Examples of accepted docstring line formatting:
+</span>
+
+<!-- N.B. This code block is Drake-only. -->
+```python
+def hello_world():
+    """Says hello to the world."""
+    ...
+
+
+def hello_world_again():
+    """
+    Says hello to the world again. We make this comment longer because we want
+    to show an example of a multiline comment.
+    """
+    ...
+
+
+def hello_world_n_times(n):
+    """
+    Says hello world a variable number of times.
+
+    Args:
+        n: Number of times to say hello.
+    """
+    ...
+```
+
+<span class="drake">
+An example of docstring line formatting that **is not** accepted:
+</span>
+
+<!-- N.B. This code block is Drake-only. -->
+```python
+def bad_docstring():
+    """Provides an example of a bad docstring because it's mutiline but doesn't
+    start aligned with the first quote."""
+    ...
+
+
+def bad_docstring_again(n):
+    """Provides another example of a bad docstring.
+
+    Args:
+        n: Number of times to fail.
+    """
+    ...
+```
+
 There are more formatting guidelines for
 docstrings below.
 
@@ -1681,7 +1739,8 @@ sentence is sufficient to describe return value.
 
 ```python
 def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
-    """Fetches rows from a Bigtable.
+    """
+    Fetches rows from a Bigtable.
 
     Retrieves rows pertaining to the given keys from the Table instance
     represented by big_table.  Silly things may happen if
@@ -1727,7 +1786,8 @@ be documented here in an
 
 ```python
 class SampleClass(object):
-    """Summary of class here.
+    """
+    Summary of class here.
 
     Longer class information....
     Longer class information....
