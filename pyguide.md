@@ -1585,6 +1585,12 @@ executed directly.
 Be sure to use the right style for module, function, method docstrings and
 inline comments.
 
+<span class="drake">
+In general, the semantic rules outlined below should be enforced by reviewers.
+However, the formatting (e.g. indentations, lines, etc.) will be enforced by
+automated lint tooling (e.g. `pycodestyle`).
+</span>
+
 <a id="s3.8.1-comments-in-doc-strings"></a>
 <a id="comments-in-doc-strings"></a>
 #### 3.8.1 Docstrings
@@ -1595,11 +1601,14 @@ extracted automatically through the `__doc__` member of the object and are used
 by `pydoc`.
 (Try running `pydoc` on your module to see how it looks.) Always use the three
 double-quote `"""` format for docstrings (per [PEP
-257](https://www.google.com/url?sa=D&q=http://www.python.org/dev/peps/pep-0257/)).
+257](http://www.python.org/dev/peps/pep-0257/)).
+<span class="nondrake">
 A docstring should be organized as a summary line (one physical line) terminated
 by a period, question mark, or exclamation point, followed by a blank line,
 followed by the rest of the docstring starting at the same cursor position as
-the first quote of the first line. There are more formatting guidelines for
+the first quote of the first line.</span>
+<span class="drake">Summary lines are not required in Drake Python code.</span>
+There are more formatting guidelines for
 docstrings below.
 
 <a id="s3.8.2-comments-in-modules"></a>
@@ -1706,7 +1715,10 @@ def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
 #### 3.8.4 Classes
 
 Classes should have a docstring below the class definition describing the class.
-If your class has public attributes, they should be documented here in an
+If your class has public attributes, they
+<span class="nondrake">should</span>
+<span class="drake">may</span>
+be documented here in an
 `Attributes` section and follow the same formatting as a
 [function's `Args`](#doc-function-args) section.
 
