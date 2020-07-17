@@ -1611,14 +1611,12 @@ the first quote of the first line.
 </span>
 <span class="drake">
 Docstrings do not need summary lines (as described in striked-out text);
-however, single line comments should be on the same line with the triple
-quotes, and multiline comments should *always* start on the line after the
-opening quotes, starting at the same cursor position as the first quote of the
-first line.
+however, all lines after the first line should still start with their cursor at
+the same cursor position as the first quote of the first line.
 </span>
 
 <span class="drake">
-Examples of docstring line formatting that are good:
+Examples of docstring line formatting that are accepted (PEP 257-compatible):
 </span>
 
 <!-- N.B. This code block is Drake-only. -->
@@ -1628,41 +1626,23 @@ def hello_world():
     ...
 
 
+def hello_world_2():
+    """
+    Says hello to the world.
+    """
+    ...
+
+
 def hello_world_again():
+    """Says hello to the world again. We make this comment longer because we
+    want to show an example of a multiline comment."""
+    ...
+
+
+def hello_world_again_2():
     """
     Says hello to the world again. We make this comment longer because we want
     to show an example of a multiline comment.
-    """
-    ...
-
-
-def hello_world_n_times(n):
-    """
-    Says hello world a variable number of times.
-
-    Args:
-        n: Number of times to say hello.
-    """
-    ...
-```
-
-<span class="drake">
-Examples of docstring line formatting that **are not** accepted:
-</span>
-
-<!-- N.B. This code block is Drake-only. -->
-```python
-def bad_docstring():
-    """Provides an example of a bad docstring because it's mutiline but doesn't
-    start aligned with the first quote."""
-    ...
-
-
-def bad_docstring_again(n):
-    """Provides another example of a bad docstring.
-
-    Args:
-        n: Number of times to fail.
     """
     ...
 ```
@@ -1740,8 +1720,7 @@ sentence is sufficient to describe return value.
 
 ```python
 def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
-    """
-    Fetches rows from a Bigtable.
+    """Fetches rows from a Bigtable.
 
     Retrieves rows pertaining to the given keys from the Table instance
     represented by big_table.  Silly things may happen if
@@ -1787,8 +1766,7 @@ be documented here in an
 
 ```python
 class SampleClass(object):
-    """
-    Summary of class here.
+    """Summary of class here.
 
     Longer class information....
     Longer class information....
