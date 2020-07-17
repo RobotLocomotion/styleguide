@@ -1613,40 +1613,6 @@ the first quote of the first line.
 Docstrings should confirm to PEP 257 with one exception: summary lines are not
 required (but are acceptable).
 </span>
-
-<span class="drake">
-Examples of docstring line formatting that are accepted (generally PEP
-257-compatible):
-</span>
-
-<!-- N.B. This code block is Drake-only. -->
-```python
-def hello_world():
-    """Says hello to the world."""
-    ...
-
-
-def hello_world_2():
-    """
-    Says hello to the world.
-    """
-    ...
-
-
-def hello_world_again():
-    """Says hello to the world again. We make this comment longer because we
-    want to show an example of a multiline comment."""
-    ...
-
-
-def hello_world_again_2():
-    """
-    Says hello to the world again. We make this comment longer because we want
-    to show an example of a multiline comment.
-    """
-    ...
-```
-
 There are more formatting guidelines for
 docstrings below.
 
