@@ -5115,6 +5115,10 @@ contributor who will need to
 understand your code. Be generous &#8212; the next
 one may be you!</p>
 
+<p class="drake">Be sure to provide public documentation strings (docstrings).
+These docstrings should be compatible with the conventions described for
+<a href="#Doxygen">Doxygen</a>.</p>
+
 <h3 id="Comment_Style">Comment Style</h3>
 
 <div class="summary">
@@ -5130,6 +5134,42 @@ syntax, as long as you are consistent.</p>
 comment and what style you use where.</p>
 
 </div> 
+
+<div class="drake">
+For consistency, Drake provides linting tools to detect and fix any comment
+strings that deviate from the following prescribed format for public docstrings
+(as described in the <a href="#Doxygen">Doxygen</a> section):
+
+<pre>/** Single-line docstring comment. */
+
+/** Multi-line docstring comment.
+Line 2.
+Line 3. */
+</pre>
+
+This means that all other formatting variants will be transformed into the above format. Examples that will map to the above examples:
+<pre>/// Single-line docstring comment.
+
+/**
+ * Single-line docstring comment.
+ */
+
+/// Multi-line docstring comment.
+/// Line 2.
+/// Line 3.
+
+/**
+ * Multi-line docstring comment.
+ * Line 2.
+ * Line 3.
+ */
+
+/** Multi-line docstring comment
+    Line 2.
+    Line 3.
+*/
+</pre>
+</div>
 
 <h3 id="File_Comments">File Comments</h3>
 
