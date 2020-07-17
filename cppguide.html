@@ -2223,40 +2223,6 @@ doubt, use overloads.</p>
 we use to make C++ code more robust, and various ways we use
 C++ that may differ from what you see elsewhere.</p>
 
-<div class="drake">
-<h3 id="Doxygen">Doxygen</h3>
-
-<div class="summary">
-  <p>Classes and methods should be documented using Doxygen.</p>
-</div>
-
-<div class="stylebody">
-  <ul>
-    <li>Only use Doxygen special comment blocks (comments declared with /// or
-    /**) on published APIs (public or protected classes and methods). Code
-    with private access or declared in .cc files should not use the Doxygen
-    block format. However, note that markup such as @return may still be used
-    for non-Doxygen (// or /*) comment blocks when it improves readability of
-    the source code for developers, even though it will never be processed by
-    Doxygen.</li>
-    <li>If you decide to use Doxygen formatting hints, then those must render
-    correctly. For instructions on how to generate the Drake Doxygen website,
-    click <a href="http://drake.mit.edu/documentation_instructions.html#documentation-generation-instructions">here</a>. For
-    additional background information,
-    see <a href="https://github.com/RobotLocomotion/drake/pull/3584">PR
-    #3584.</a></li>
-    <li>Prefer Doxygen comment blocks that are readable in both a rendered and
-    un-rendered state. This could mean foregoing the most beautiful LaTeX
-    formatting for some serviceable text equations readable in the code. Or,
-    you may want to augment beautiful-but-unreadable formatting with a
-    simplified presentation of the same information to accommodate future
-    programmers, who are likely to only see the header file. For more
-    background information,
-    see <a href="https://github.com/RobotLocomotion/drake/pull/3584">PR
-    #3584</a>.</li>
-  </ul>
-</div>
-
 <h3 id="Memory Allocation">Memory Allocation</h3>
 
 <div class="summary">
@@ -5115,61 +5081,112 @@ contributor who will need to
 understand your code. Be generous &#8212; the next
 one may be you!</p>
 
-<p class="drake">Be sure to provide public documentation strings (docstrings).
-These docstrings should be compatible with the conventions described for
-<a href="#Doxygen">Doxygen</a>.</p>
+<div class="drake">
+<h3 id="Doxygen">Doxygen Style</h3>
+
+<div class="stylebody">
+<p>Drake uses Doxygen to document its public (and sometimes
+private) APIs. All public APIs should have documentation strings (or
+docstrings).</p>
+
+<p>See
+<a href="https://drake.mit.edu/documentation_instructions.html#documentation-generation-instructions">documentation generation instructions</a>
+for how to preview the output locally.</p>
+
+<h4 class="stylepoint_subsection">Comment Markers</h4>
+
+<p>When writing Doxygen comments, use <code>/** */</code> style, not
+<code>///</code> nor <code>/*!</code> style. The comment should begin on the
+same line as the opening mark, and new lines should align with the opening
+slash, should not repeat the asterisk, and should close on the last line of
+text.  This maximizes the vertical and horizontal compatctness of the code.
+Drake will provide linting tools that can identify and fix these errors, so
+they should not be discussed in normal code review.
+
+<pre>/** Returns an iterator for this table. It is the client's responsibility to
+delete the iterator when it is done with it, and it must not use the iterator
+once the GargantuanTable object on which the iterator was created has been
+deleted. */
+Iterator* GetIterator() const;
+</pre>
+</p>
+
+<p>Only use <code>/** */</code> syntax for comments that appear in Drake's
+Doxygen output. The use of <code>/** */</code> is a signal to the reader that
+the comment is part of Doxygen's output, so it is misleading to use that syntax
+in places where the comment is not configured to be displayed in Drake's
+Doxygen output. Specifically, code within the <code>internal</code> namespace
+should not use this syntax.</p>
+
+<h4 class="stylepoint_subsection">Inline Markup</h4>
+
+<p>Markup such as @return may still be used for non-Doxygen (<code>//</code>
+or <code>/*</code>) comment blocks when it improves readability of the source
+code for developers, even though the markup is not processed by Doxygen.</p>
+
+<p>If you decide to use Doxygen formatting hints, then those must render
+correctly.</p>
+
+<p>Prefer Doxygen comment blocks that are readable in both a rendered and
+un-rendered state. This could mean foregoing the most beautiful LaTeX
+formatting for some serviceable text equations readable in the code. Or, you
+may want to augment beautiful-but-unreadable formatting with a simplified
+presentation of the same information to accommodate future programmers, who are
+likely to only see the header file.</p>
+</div>
+</div>
 
 <h3 id="Comment_Style">Comment Style</h3>
 
-<div class="summary">
-<p>Use either the <code>//</code> or <code>/* */</code>
-syntax, as long as you are consistent.</p>
-</div>
-
 <div class="stylebody">
+<p><span class="nondrake">Use either the <code>//</code> or <code>/* */</code>
+syntax, as long as you are consistent.</span></p>
 
-<p>You can use either the <code>//</code> or the <code>/*
-*/</code> syntax; however, <code>//</code> is
-<em>much</em> more common. Be consistent with how you
-comment and what style you use where.</p>
+<p><span class="nondrake">You can use either the <code>//</code> or
+the <code>/* */</code> syntax; however, <code>//</code> is
+<em>much</em> more common.</span></p>
 
-</div> 
+<p>Be consistent with how you comment and what style you use where.</p>
 
 <div class="drake">
-For consistency, Drake provides linting tools to detect and fix any comment
-strings that deviate from the following prescribed format for public docstrings
-(as described in the <a href="#Doxygen">Doxygen</a> section):
+<p>Use <code>/* */</code> style for API-like comments (file, class, function
+declaration, member variable declaration) that are not processed by Doxygen,
+e.g., in front of private or internal functions. This minimizes formatting
+differences with similar comments that <em>are</em> processed by Doxygen. Use
+the same line-wrapping rules as we do for Doxygen style.</p>
 
-<pre>/** Single-line docstring comment. */
+<p>Use <code>//</code> style inside the body of a function. The multi-line
+<code>/* */</code> style within a function body is tool difficult to tease
+apart from the surrounding statements.</p>
 
-/** Multi-line docstring comment.
-Line 2.
-Line 3. */
+<p>Intra-line comments may use <code>/* */</code> style, e.g.,
+<code>auto x = Calculate(/* callback */ nullptr);</code>.</p>
+
+<p>Example:
+<pre>/** Holds useful information. This is a really long line that wraps after we
+reach the column limit. */
+class Foo {
+ public:
+  /** Returns an approximation of the current air pressure. */
+  double get_bar() const;
+
+ private:
+  /* Updates member data using sensors. For now, we only update `bar_` but in
+  the future we anticipate additional sensors. */
+  void ReadNewData() {
+    // TODO(#123) Add exponential filter(s) here.
+    bar_ = get_sensor_data(22 /* amb_pressure_adc */);
+  }
+
+  /* Air pressure; never negative. */
+  double bar_{};
+};
+
+/** Degrees of freedom of the new robot. */
+constexpr int kNumDofs = 7;
 </pre>
-
-This means that all other formatting variants will be transformed into the above format. Examples that will map to the above examples:
-<pre>/// Single-line docstring comment.
-
-/**
- * Single-line docstring comment.
- */
-
-/// Multi-line docstring comment.
-/// Line 2.
-/// Line 3.
-
-/**
- * Multi-line docstring comment.
- * Line 2.
- * Line 3.
- */
-
-/** Multi-line docstring comment
-    Line 2.
-    Line 3.
-*/
-</pre>
-</div>
+</div> 
+</div> 
 
 <h3 id="File_Comments">File Comments</h3>
 
