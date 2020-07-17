@@ -1610,13 +1610,13 @@ followed by the rest of the docstring starting at the same cursor position as
 the first quote of the first line.
 </span>
 <span class="drake">
-Docstrings do not need summary lines (as described in striked-out text);
-however, all lines after the first line should still start with their cursor at
-the same cursor position as the first quote of the first line.
+Docstrings should confirm to PEP 257 with one exception: summary lines are not
+required (but are acceptable).
 </span>
 
 <span class="drake">
-Examples of docstring line formatting that are accepted (PEP 257-compatible):
+Examples of docstring line formatting that are accepted (generally PEP
+257-compatible):
 </span>
 
 <!-- N.B. This code block is Drake-only. -->
