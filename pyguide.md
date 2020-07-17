@@ -40,7 +40,7 @@ clarity and easier maintainability.
 </p>
 
 <p class="drake">
-A large number of sections are intentially hidden, as they do not apply to
+A large number of sections are intentionally hidden, as they do not apply to
 Drake development. For all other aspects of code style, please see Drake's
 <a href="https://drake.mit.edu/code_style_guide.html#python-style">
 Code Style Guide</a> documentation page.
@@ -1660,6 +1660,11 @@ boilerplate for the license used by the project (for example, Apache 2.0, BSD,
 LGPL, GPL)
 </span>
 
+<span class="drake">
+At present, Drake's code (C++, Python, Skylark, etc.) does not explicitly
+declare its license.
+</span>
+
 <a id="s3.8.3-functions-and-methods"></a>
 <a id="functions-and-methods"></a>
 #### 3.8.3 Functions and Methods
@@ -1696,7 +1701,8 @@ Sections should be indented two spaces, except for the heading.
 [*Args:*](#doc-function-args)
 :   List each parameter by name. A description should follow the name, and be
 separated by a colon and a space. If the description is too long to fit on a
-single 80-character <span class="drake">(or 79-character)</span> line, use a
+single <span class="nondrake">80-character</span>
+<span class="drake">79-character\*</span> line, use a
 hanging indent of 2 or 4 spaces (be
 consistent with the rest of the file).<br>
 The description should include required type(s) if the code does not contain
@@ -1704,7 +1710,10 @@ a corresponding type annotation.<br>
 If a function accepts `*foo` (variable length argument lists) and/or `**bar`
 (arbitrary keyword arguments), they should be listed as `*foo` and `**bar`.
 <br>
+
 <span class="drake">Obvious parameters do not need to be documented.</span>
+
+<span class="drake">\* See [PEP 8 - Maximum Line Length](https://www.python.org/dev/peps/pep-0008/#maximum-line-length)</span>
 
 <a id="doc-function-returns"></a>
 [*Returns:* (or *Yields:* for generators)](#doc-function-returns)
