@@ -4,8 +4,49 @@ Prefer only GitHub-flavored Markdown in external text.
 See README.md for details.
 -->
 
+<!--
+Drake authors:
+This should be synchronized with the relevant styles in
+`include/styleguide.css`.
+-->
+
+<style>
+.drake {
+  font-weight: bold;
+  color: purple;
+}
+
+.nondrake {
+  text-decoration: line-through;
+  color: DeepPink;
+}
+</style>
+
 # Google Python Style Guide
 
+<p class="drake">Forked and adapted from the
+<a href="https://google.github.io/styleguide/pyguide.html">Google style
+guide</a>.  Many references to Google are deliberately left in to minimize
+merge conflicts.</p>
+
+<p>Where Drake-specific rules contradict previous Google conventions, the text
+is retained for reference but otherwise marked <span class="nondrake">with a
+strikethrough</span>. The style is intentionally difficult to read in the
+normal course of perusal. Copying-and-pasting, or even simply highlighting the
+text, will facilitate reading if necessary.
+
+Rules specific to Drake <span class="drake">are highlighted like this</span> for
+clarity and easier maintainability.
+</p>
+
+<p class="drake">
+A large number of sections are intentionally hidden, as they do not apply to
+Drake development. For all other aspects of code style, please see Drake's
+<a href="https://drake.mit.edu/code_style_guide.html#python-style">
+Code Style Guide</a> documentation page.
+</p>
+
+<!--
 
 <a id="background"></a>
 ## 1 Background
@@ -1535,12 +1576,21 @@ This line is used by the kernel to find the Python interpreter, but is ignored
 by Python when importing modules. It is only necessary on a file that will be
 executed directly.
 
+-->
+
 <a id="s3.8-comments"></a>
 <a id="comments"></a>
 ### 3.8 Comments and Docstrings
 
 Be sure to use the right style for module, function, method docstrings and
 inline comments.
+
+<span class="drake">
+In general, the semantic rules outlined below should be enforced by reviewers.
+However, the formatting (e.g. indentations, lines, etc.) will be enforced by
+automated lint tooling (e.g. `pycodestyle`), and should not be remarked upon by
+reviewers.
+</span>
 
 <a id="s3.8.1-comments-in-doc-strings"></a>
 <a id="comments-in-doc-strings"></a>
@@ -1552,20 +1602,34 @@ extracted automatically through the `__doc__` member of the object and are used
 by `pydoc`.
 (Try running `pydoc` on your module to see how it looks.) Always use the three
 double-quote `"""` format for docstrings (per [PEP
-257](https://www.google.com/url?sa=D&q=http://www.python.org/dev/peps/pep-0257/)).
+257](http://www.python.org/dev/peps/pep-0257/)).
+<span class="nondrake">
 A docstring should be organized as a summary line (one physical line) terminated
 by a period, question mark, or exclamation point, followed by a blank line,
 followed by the rest of the docstring starting at the same cursor position as
-the first quote of the first line. There are more formatting guidelines for
+the first quote of the first line.
+</span>
+<span class="drake">
+Docstrings should conform to PEP 257 with one exception: summary lines are not
+required (but are acceptable).
+</span>
+There are more formatting guidelines for
 docstrings below.
 
 <a id="s3.8.2-comments-in-modules"></a>
 <a id="comments-in-modules"></a>
 #### 3.8.2 Modules
 
+<span class="nondrake">
 Every file should contain license boilerplate. Choose the appropriate
 boilerplate for the license used by the project (for example, Apache 2.0, BSD,
 LGPL, GPL)
+</span>
+
+<span class="drake">
+At present, Drake's code (C++, Python, Skylark, etc.) does not explicitly
+declare its license.
+</span>
 
 <a id="s3.8.3-functions-and-methods"></a>
 <a id="functions-and-methods"></a>
@@ -1575,7 +1639,7 @@ In this section, "function" means a method, function, or generator.
 
 A function must have a docstring, unless it meets all of the following criteria:
 
--   not externally visible
+-   <span class="nondrake">not externally visible</span>
 -   very short
 -   obvious
 
@@ -1603,12 +1667,19 @@ Sections should be indented two spaces, except for the heading.
 [*Args:*](#doc-function-args)
 :   List each parameter by name. A description should follow the name, and be
 separated by a colon and a space. If the description is too long to fit on a
-single 80-character line, use a hanging indent of 2 or 4 spaces (be
+single <span class="nondrake">80-character</span>
+<span class="drake">79-character\*</span> line, use a
+hanging indent of 2 or 4 spaces (be
 consistent with the rest of the file).<br>
 The description should include required type(s) if the code does not contain
 a corresponding type annotation.<br>
 If a function accepts `*foo` (variable length argument lists) and/or `**bar`
 (arbitrary keyword arguments), they should be listed as `*foo` and `**bar`.
+<br>
+
+<span class="drake">Obvious parameters do not need to be documented.</span>
+
+<span class="drake">\* See [PEP 8 - Maximum Line Length](https://www.python.org/dev/peps/pep-0008/#maximum-line-length)</span>
 
 <a id="doc-function-returns"></a>
 [*Returns:* (or *Yields:* for generators)](#doc-function-returns)
@@ -1659,9 +1730,14 @@ def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
 #### 3.8.4 Classes
 
 Classes should have a docstring below the class definition describing the class.
-If your class has public attributes, they should be documented here in an
+If your class has public attributes, they
+<span class="nondrake">should</span>
+<span class="drake">may</span>
+be documented here in an
 `Attributes` section and follow the same formatting as a
 [function's `Args`](#doc-function-args) section.
+
+<span class="drake">Attributes are not always documented for classes.</span>
 
 ```python
 class SampleClass(object):
@@ -1683,6 +1759,8 @@ class SampleClass(object):
     def public_method(self):
         """Performs operation blah."""
 ```
+
+<!--
 
 <a id="comments-in-block-and-inline"></a>
 <a id="s3.8.5-comments-in-block-and-inline"></a>
@@ -1714,7 +1792,10 @@ knows Python (though not what you're trying to do) better than you do.
 # the next element is i+1
 ```
 
+-->
+
 <!-- The next section is copied from the C++ style guide. -->
+
 <a id="s3.8.6-punctuation-spelling-and-grammar"></a>
 <a id="punctuation-spelling-and-grammar"></a>
 #### 3.8.6 Punctuation, Spelling and Grammar
@@ -1732,6 +1813,7 @@ using a comma when you should be using a semicolon, it is very important that
 source code maintain a high level of clarity and readability. Proper
 punctuation, spelling, and grammar help with that goal.
 
+<!--
 <a id="s3.9-classes"></a>
 <a id="classes"></a>
 ### 3.9 Classes
@@ -2735,4 +2817,4 @@ style is also important. If code you add to a file looks drastically different
 from the existing code around it, it throws readers out of their rhythm when
 they go to read it. Avoid this.
 
-
+-->
