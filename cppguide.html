@@ -5737,6 +5737,37 @@ can easily show longer lines.</p>
 
 </div> 
 
+<div class="drake">
+<h3 id="Raw_String_Literals">Raw String Literals</h3>
+
+<p>Raw string literals provide an easy way to transcribe multi-line C++ string
+constants.  The
+<a href="https://en.cppreference.com/w/cpp/language/string_literal">string_literal</a>
+page on cppreference provides details.</p>
+
+<p>When writing multi-line raw string literals in Drake, prefer to use a
+triple-quote formatting as follows:</p>
+
+<pre>
+void foo() {
+  const char* x = R"""(
+root:
+  value: 1.0
+)""";
+}
+</pre>
+
+<p>In particular, use <tt>""</tt> as the <em>delimiter</em> so that the overall
+effect is three quote marks in a row.</p>
+
+<p>Rationale: To help developers reading our code who are not familiar with raw
+string literals, we use the triple-quote pattern that is a similar to Python's
+multi-line literal.  We prefer using a consistent delimiter everywhere so the
+reader only has to learn one simple pattern, instead of exactly how the C++
+parser is specified to match the various allowable delimiters.<p>
+
+</div>
+
 <h3 id="Non-ASCII_Characters">Non-ASCII Characters</h3>
 
 <div class="summary">
