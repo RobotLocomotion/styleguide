@@ -361,10 +361,21 @@ class CpplintTest(CpplintTestBase):
     lines = ['a', 'b', ' c */']
     self.assertEquals(2, cpplint.FindNextMultiLineCommentEnd(lines, 0))
 
-  def testRemoveMultiLineCommentsFromRange(self):
-    lines = ['a', '  /* comment ', ' * still comment', ' comment */   ', 'b']
-    cpplint.RemoveMultiLineCommentsFromRange(lines, 1, 4)
-    self.assertEquals(['a', '/**/', '/**/', '/**/', 'b'], lines)
+  def testReplaceMultiLineCommentsInRange(self):
+    lines = [
+      'a',
+      '  /* comment ',
+      '  * still comment',
+      '  comment */',
+      'b']
+    cpplint.ReplaceMultiLineCommentsInRange(None, lines, 1, 4, None)
+    self.assertEquals([
+      'a',
+      '  // comment ',
+      '  // * sticomment',
+      '  // comt ./',
+      'b'],
+      lines)
 
   def testSpacesAtEndOfLine(self):
     self.TestLint(
@@ -513,9 +524,7 @@ class CpplintTest(CpplintTestBase):
                                '// NOLINT(build/header_guard)',
                                '// NOLINT(build/pragma_once)',
                                'int64 a = (uint64) 65;',
-                               '/* Prevent warnings about the modeline',
-                               modeline,
-                               '*/',
+                               '// ' + modeline,
                                ''],
                               error_collector)
       self.assertEquals('', error_collector.Results())
@@ -1317,7 +1326,7 @@ class CpplintTest(CpplintTestBase):
             class Foo {
             Foo(int f);  // should cause a lint warning in code
             }
-            */ """,
+            */""",
         '')
     self.TestMultiLineLint(
         r"""/* int a = 0; multi-liner

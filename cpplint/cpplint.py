@@ -1384,12 +1384,61 @@ def FindNextMultiLineCommentEnd(lines, lineix):
   return len(lines)
 
 
-def RemoveMultiLineCommentsFromRange(lines, begin, end):
-  """Clears a range of lines for multi-line comments."""
-  # Having // dummy comments makes the lines non-empty, so we will not get
-  # unnecessary blank line warnings later in the code.
+def ReplaceMultiLineCommentsInRange(filename, lines, begin, end, error):
+  """Replaces multi-line C-style comments with line-by-line C++ comments.
+  This enables the existing line-by-line comment linting to take effect.
+  Retains empty lines, line length, and indentation to the extent practical.
+  """
+  assert begin + 1 <= end - 1, "The range must be multi-line"
+  # Find the common whitespace prefix for all lines.
+  prefix, _ = lines[begin].split('/*', 2)
+  if len(prefix.strip()) > 0:
+    error(filename, i, 'readability/multiline_comment', 5,
+          'Multi-line comments should start on a dedicated line')
+    return
+  # Rewrite each line to C++ comment instead of C comment.
   for i in range(begin, end):
-    lines[i] = '/**/'
+    line = lines[i]
+    # Handle the first line specially.
+    # Change "/* Foo" to "// Foo", "/** Bar" to "/// Bar".
+    if i == begin:
+      lines[i] = line.replace('*', '/')
+      continue
+    # Leave interior blank lines untouched.
+    if len(line) == 0:
+      continue
+    # Check for the common whitespace prefix.
+    if not line.startswith(prefix):
+      error(filename, i, 'readability/multiline_comment', 5,
+            'Inconsistent indentation on multi-line comment')
+      continue
+    suffix = line[len(prefix):]
+    # Handle the last line specially.
+    if i == (end - 1):
+      # Check that there is nothing after the comment close.
+      _, after = suffix.split('*/', 2)
+      if after:
+        error(filename, i, 'readability/multiline_comment', 5,
+              'There should not be anything after the */ that closes a '
+              'multi-line comment')
+        continue
+      # Change "Foo */" to "Foo ./" and then treat it like a middle line.
+      suffix = suffix.replace('*', '.')
+    # Add a leading '//' to non-initial lines.
+    if len(prefix) > 4:
+      # We can overwrite the prefix while retaining 2-space indent.
+      lines[i] = prefix[:-4] + '//  ' + suffix
+    elif len(suffix) < 3:
+      # The line is trivially short.  Not much we can do.
+      lines[i] = '/' * len(line)
+    else:
+      # Shorten the comment by deleting 3 letters in the middle.  This
+      # preserves the end of line (for trailing whitespace complaints)
+      # and the start of line (for http URLs to still look like URLs).
+      mid = len(suffix) // 2
+      new_suffix = suffix[:mid-2] + suffix[mid+1:]
+      # Insert the comment marker and then the trimmed suffix.
+      lines[i] = prefix + '// ' + new_suffix
 
 
 def RemoveMultiLineComments(filename, lines, error):
@@ -1404,7 +1453,8 @@ def RemoveMultiLineComments(filename, lines, error):
       error(filename, lineix_begin + 1, 'readability/multiline_comment', 5,
             'Could not find end of multi-line comment')
       return
-    RemoveMultiLineCommentsFromRange(lines, lineix_begin, lineix_end + 1)
+    ReplaceMultiLineCommentsInRange(
+        filename, lines, lineix_begin, lineix_end + 1, error)
     lineix = lineix_end + 1
 
 
@@ -4418,11 +4468,15 @@ def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,
   # URLs can be long too.  It's possible to split these, but it makes them
   # harder to cut&paste.
   #
+  # Tables of data (1.0 | 2.0 | 3.0 | ...) are sometimes easier grok as long
+  # lines, so we pass any comment with at least two " | ".
+  #
   # The "$Id:...$" comment may also get very long without it being the
   # developers fault.
   if (not line.startswith('#include') and not is_header_guard and
       not Match(r'^\s*//.*http(s?)://\S*$', line) and
       not Match(r'^\s*//\s*[^\s]*$', line) and
+      not Match(r'^\s*//(.* \| ){2,}', line) and
       not Match(r'^// \$Id:.*#[0-9]+ \$$', line)):
     line_width = GetLineWidth(line)
     if line_width > _line_length:
