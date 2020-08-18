@@ -397,7 +397,20 @@ lines or fewer.</p>
 <div class="definition">
 <p>You can declare functions in a way that allows the compiler to expand
 them inline rather than calling them through the usual
-function call mechanism.</p>
+function call mechanism.
+<span class="drake">To achieve this, define the function in the header
+(<tt>*.h</tt>) file, instead of the <tt>*.cc</tt> file.</span>
+</p>
+
+<p class="drake">Note that
+<a href="https://en.cppreference.com/w/cpp/language/class_template#Explicit_instantiation">
+explicit template instantiation</a> enables the use of templated classes or
+functions without defining them in the header file.</p>
+
+<p class="drake">The C++ keyword <tt>inline</tt> is a separate concept
+related to linking, not function inlining. Some function definitions need
+to be marked with the <tt>inline</tt> keyword to avoid linking errors related
+to multiple definitions.</p>
 </div>
 
 <div class="pros">
@@ -436,6 +449,71 @@ main reason for making a virtual function inline is to
 place its definition in the class, either for convenience
 or to document its behavior, e.g., for accessors and
 mutators.</p>
+
+<p class="drake">The use of a numerical scalar class template is not a
+sufficient reason on its own to place a method definition in a header file.
+When a class is templated only on its numerical scalar type, Drake provides the
+<a href="https://drake.mit.edu/doxygen_cxx/group__default__scalars.html">
+default scalars</a> macros to declare and define the template instantiations
+that allow placing definitions into the <tt>*.cc</tt> file. These macros should
+be used whenever practical, and the class's method definitions should be placed
+into the <tt>*.cc</tt> file in most cases, consistent with the above rules of
+thumb.</p>
+
+<p class="drake">Example header file:</p>
+
+<pre class="drake">#include "drake/common/default_scalars.h"
+
+namespace sample {
+
+template &lt;typename T&gt;
+class MySystem final : public LeafSystem&lt;T&gt; {
+ public:
+  // Expensive functions such as this constructor or destructor are not inlined.
+  MySystem();
+  ~MySystem() final;
+
+  // Short and inexpensive accessors can be inlined.
+  int size() { return get_output_port(0).size(); }
+
+ private:
+  // This calculation function is also expensive, and therefore isn't inlined.
+  void CalcFoo(const Context&lt;T&gt;& context, BasicVector&lt;T&gt;* output);
+};
+
+}  // namespace sample
+
+DRAKE_DECLARE_CLASS_TEMPLATE_INSTANTIATIONS_ON_DEFAULT_SCALARS(
+    class ::sample::MySystem)
+</pre>
+
+<p class="drake">Example cc file:</p>
+<pre class="drake">#include "my_system.h"
+
+namespace sample {
+
+// Even though the constructor appears to be short, by virtue of implicitly
+// calling the LeafSystem base class constructor it fails to meet the 10-line
+// rule of thumb.
+template &lt;typename T&gt;
+MySystem&lt;T&gt;::MySystem() = default;
+
+// Ditto for the destructor.
+template &lt;typename T&gt;
+MySystem&lt;T&gt;::~MySystem() = default;
+
+template &lt;typename T&gt;
+void MySystem&lt;T&gt;::CalcFoo(
+    const Context&lt;T&gt;& context,
+    BasicVector&lt;T&gt;* output) {
+  // ... (10+ lines long, etc.) ...
+}
+
+}  // namespace sample
+
+DRAKE_DEFINE_CLASS_TEMPLATE_INSTANTIATIONS_ON_DEFAULT_SCALARS(
+    class ::sample::MySystem)
+</pre>
 </div> 
 
 </div> 
@@ -2514,7 +2592,6 @@ the units used.</p>
   <li>Embrace templates/C++14 when it makes the code more correct (more clear
   or more readable also implies more correct).</li>
   <li>Minimize template requirements on public interfaces.</li>
-  <li>Avoid explicit template instantiations in cc files when possible.</li>
 </ul>
 
 </div>
@@ -5552,7 +5629,7 @@ name that is given.</p>
 <div>
 <pre>// TODO(kl@gmail.com): Use a "*" here for concatenation operator.
 // TODO(Zeke) change this to use relations.
-// TODO(bug 12345): remove the "Last visitors" feature
+// TODO(#12345): remove the "Last visitors" feature
 </pre>
 </div>
 
@@ -5562,6 +5639,16 @@ very specific date ("Fix by November 2005") or a very
 specific event ("Remove this code when all clients can
 handle XML responses.").</p>
 
+<p class="drake">For multi-line TODO comments, we allow a specific indentation
+convention that is compatible with the CLion IDE's syntax highlighting:</p>
+
+<pre class="drake">// TODO(#12345): This is a multi-line comment where after each line break we
+//  use one or more extra horizontal spaces so that the subsequent lines are
+//  understood by CLion to be a continuation of the first line.
+</pre>
+
+<p class="drake">This indentation is allowed, but not required.  We mention it
+here only for the avoidence of doubt during code reviews.</p>
 </div> 
 
 <h3 id="Deprecation_Comments">Deprecation Comments</h3>
