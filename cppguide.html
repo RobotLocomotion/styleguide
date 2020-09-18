@@ -54,6 +54,7 @@ Drake does not use <a href="https://github.com/abseil/abseil-cpp">Abseil</a>;
 please ignore any suggestions or rules that regard Abseil.
 </p>
 
+
 <p>Note that this guide is not a C++ tutorial: we assume that
 the reader is familiar with the language. </p>
 
@@ -178,6 +179,8 @@ input.</p>
   features. The C++ version targeted by this guide will advance
   (aggressively) over time.</p>
 
+
+
 <p>Do not use
   <a href="#Nonstandard_Extensions">non-standard extensions</a>.</p>
 
@@ -243,13 +246,13 @@ should be
 <code><i>&lt;PROJECT&gt;</i>_<i>&lt;PATH&gt;</i>_<i>&lt;FILE&gt;</i>_H_</code>.</p>
 </span>
 
-<div>
+
+
 <p>To guarantee uniqueness, they should
 be based on the full path in a project's source tree. For
 example, the file <code>foo/src/bar/baz.h</code> in
 project <code>foo</code> should have the following
 guard:</p>
-</div>
 
 <pre>#ifndef FOO_BAR_BAZ_H_
 #define FOO_BAR_BAZ_H_
