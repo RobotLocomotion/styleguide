@@ -5681,15 +5681,22 @@ integer literal (assuming the variable type can exactly represent that integer),
 but note that a number in exponential notation is never an integer literal.
 </p>
 
+<p class="drake">The decimal point may be omitted for exponential powers of 10
+when the mantissa is exactly one, e.g., <code>1e3</code>
+or <code>1e-6</code>.</p>
+
 <pre class="badcode">float f = 1.f;
 long double ld = -.5L;
 double d = 1248e6;
+<span class="drake">double negtol = -1e-3;</span>
 </pre>
 
 <pre class="goodcode">float f = 1.0f;
 float f2 = 1;   // Also OK
 long double ld = -0.5L;
 double d = 1248.0e6;
+<span class="drake">double scale = 1e3;</span>
+<span class="drake">double tol = 1e-6;</span>
 </pre>
 
 
