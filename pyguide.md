@@ -2132,6 +2132,20 @@ required (but are acceptable).
 There are more formatting guidelines for
 docstrings below.
 
+<!--
+N.B. We use //br because 2+ line breaks will make Markdown break the continuity
+across the //span element.
+-->
+<span class="drake">
+`pydrake` documentation uses Sphinx to generate documentation
+(see Drake's [Documentation Generation Instructions](https://drake.mit.edu/documentation_instructions.html)),
+and uses the Sphinx Napoleon plugin to process Google-style docstrings.
+<br/>
+This guide itself does not have comprehensive documentation on all directives
+available, but the Sphinx Napoleon documentation does:
+[`sphinx.ext.napoleon` docs](https://www.sphinx-doc.org/en/1.6.7/ext/napoleon.html)
+</span>
+
 <a id="s3.8.2-comments-in-modules"></a>
 <a id="382-modules"></a>
 <a id="comments-in-modules"></a>

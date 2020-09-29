@@ -39,8 +39,15 @@ Relevant Pages
 
 The relevant modified style guides used by Drake are:
 
-* [C++ Style Guide](./cppguide.html)
-* [Python Style Guide](./pyguide.html) (*generation required*)
+* C++ Style Guide:
+[local preview](./cppguide.html) |
+[rendered online](https://drake.mit.edu/styleguide/cppguide.html)
+* Python Style Guide:
+[local preview](./pyguide.html)\* |
+[rendered online](https://drake.mit.edu/styleguide/pyguide.html)
+
+\* These docs must be generated to preview locally. Please see
+<https://drake.mit.edu/documentation_instructions.html> for instructions.
 
 Making New Changes
 ------------------
