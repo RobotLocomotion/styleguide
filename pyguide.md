@@ -1985,9 +1985,12 @@ At present, Drake's code (C++, Python, Skylark, etc.) does not explicitly
 declare its license.
 </span>
 
+<span class="nondrake">
 Files should start with a docstring describing the contents and usage of the
 module.
-```python
+</span>
+
+<pre class="nondrake">
 """A one line summary of the module or program, terminated by a period.
 
 Leave one blank line.  The rest of this docstring should contain an
@@ -2000,7 +2003,7 @@ examples.
   foo = ClassFoo()
   bar = foo.FunctionBar()
 """
-```
+</pre>
 
 <a id="s3.8.3-functions-and-methods"></a>
 <a id="383-functions-and-methods"></a>
