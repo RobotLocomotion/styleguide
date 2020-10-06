@@ -2052,8 +2052,6 @@ aptly described using a one-line docstring.
     consistent with the rest of the file).
 
     The description should include required type(s) if the code does not contain
-    a corresponding type annotation.
-    The description should include required type(s) if the code does not contain
     a corresponding type annotation. If a function accepts `*foo` (variable
     length argument lists) and/or `**bar` (arbitrary keyword arguments), they
     should be listed as `*foo` and `**bar`.
