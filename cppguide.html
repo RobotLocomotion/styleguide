@@ -1868,9 +1868,10 @@ performance.</p>
 <p>Parameters are either input to the function, output from the
 function, or both. Input parameters should usually be values
 or <code>const</code> references,
+<span class="nondrake">
 while required (non-nullable) output and input/output parameters should
 usually be references. Generally, use <code>absl::optional</code> to represent
-optional inputs, and non-<code>const</code> pointers to represent
+optional inputs,</span> and use non-<code>const</code> pointers to represent
 optional outputs.</p>
 
 <p>
