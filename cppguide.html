@@ -2447,7 +2447,12 @@ the units used.</p>
 
 <h3 id="Rvalue_references">Rvalue References</h3>
 
+<span class="nondrake">
 <p>Use rvalue references only in certain special cases listed below.</p>
+</span>
+<span class="drake">
+<p>You may use rvalue references in the cases listed below.</p>
+</span>
 
 <p class="definition"></p>
 <p> Rvalue references
@@ -2505,8 +2510,14 @@ rules apply. Such a reference is called forwarding reference.</p>
 </ul>
 
 <p class="decision"></p>
+<span class="nondrake">
 <p>Do not use rvalue references (or apply the <code>&amp;&amp;</code>
 qualifier to methods), except as follows:</p>
+</span>
+<span class="drake">
+<p>You may use rvalue references (or apply the <code>&amp;&amp;</code>
+qualifier to methods), as follows:</p>
+</span>
 <ul>
   <li>You may use them to define move constructors and move assignment
   operators (as described in
