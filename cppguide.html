@@ -3008,6 +3008,12 @@ casts when explicit type conversion is necessary.
   value using a different type of the same size (a type pun), such as
   interpreting the bits of a <code>double</code> as
   <code>int64</code>.</li>
+
+  <li><span class="drake">
+  Use <code>drake::unused(foo)</code> to mark <code>foo</code> as unused
+  for the compiler and anyone else reading your code. Using a C-style cast
+  to <code>void</code> as in <code>(void)foo</code> is also permitted.
+  </span></li>
 </ul>
 
 <p>See the <a href="#Run-Time_Type_Information__RTTI_">
