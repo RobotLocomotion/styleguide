@@ -168,7 +168,8 @@ style guidelines we use for Google code. If you are modifying a project that
 originated at Google, you may be pointed to this page to see the style guides
 that apply to that project.
 
-This project holds the [C++ Style Guide][cpp], [Swift Style Guide][swift], [Objective-C Style Guide][objc],
+This project holds the [C++ Style Guide][cpp], [C# Style Guide][csharp], 
+[Swift Style Guide][swift], [Objective-C Style Guide][objc],
 [Java Style Guide][java], [Python Style Guide][py], [R Style Guide][r],
 [Shell Style Guide][sh], [HTML/CSS Style Guide][htmlcss],
 [JavaScript Style Guide][js], [AngularJS Style Guide][angular],
@@ -192,6 +193,7 @@ The following Google style guides live outside of this project:
 
 
 [cpp]: https://google.github.io/styleguide/cppguide.html
+[csharp]: https://google.github.io/styleguide/csharp-style.html
 [swift]: https://google.github.io/swift/
 [objc]: objcguide.md
 [java]: https://google.github.io/styleguide/javaguide.html
