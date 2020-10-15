@@ -46,9 +46,9 @@ Drake development. For all other aspects of code style, please see Drake's
 Code Style Guide</a> documentation page.
 </p>
 
-<!--
-
 <!-- markdown="1" is required for GitHub Pages to render the TOC properly. -->
+
+<!--
 
 <details markdown="1">
   <summary>Table of Contents</summary>
@@ -2212,7 +2212,7 @@ aptly described using a one-line docstring.
 :   List each parameter by name. A description should follow the name, and be
     separated by a colon followed by either a space or newline. If the
     description is too long to fit on a single
-	<span class="nondrake">80-character</span>
+    <span class="nondrake">80-character</span>
     <span class="drake">79-character\*</span>
     line, use a hanging
     indent of 2 or 4 spaces more than the parameter name (be consistent with the
