@@ -2317,6 +2317,11 @@ def fetch_smalltable_rows(table_handle: smalltable.Table,
     """
 ```
 
+<span class="drake">
+In the above example, note that the typing annotations on the function
+signature are not required in Drake.
+</span>
+
 <a id="s3.8.4-comments-in-classes"></a>
 <a id="384-classes"></a>
 <a id="comments-in-classes"></a>
