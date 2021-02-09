@@ -1849,7 +1849,10 @@ sections that would be empty.</p>
 
 <p>Within each section, generally prefer grouping similar
 kinds of declarations together, and generally prefer the
-following order: types (including <code>typedef</code>,
+following order:
+<span class="drake">DRAKE_DEFAULT_COPY_AND_MOVE_AND_ASSIGN or
+DRAKE_NO_COPY_NO_MOVE_NO_ASSIGN</span>,
+types (including <code>typedef</code>,
 <code>using</code>, and nested structs and classes),
 constants, factory functions, constructors and assignment
 operators, destructor, all other methods, data members.</p>
@@ -2642,28 +2645,41 @@ members.</p>
 
 <h3 id="Exceptions">Exceptions</h3>
 
-<p class="drake"> Throwing exceptions is permitted and encouraged for error handling only.</p>
 <p class="nondrake">We do not use C++ exceptions.</p>
+<p class="drake">Throwing exceptions is permitted and encouraged for error
+reporting only.  Catching exceptions is forbidden except in unit tests as
+noted below.</p>
 
 <div class="stylebody">
   <p class="drake">Unit tests may catch exceptions using
   <a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#exception-assertions">EXPECT_THROW</a>
-  if the exception is documented in the API. Otherwise, catching exceptions is
-  forbidden. For more context, see
-  <a href="https://github.com/robotlocomotion/drake/pull/3759">PR
-  #3759</a>.</p>
+  or
+  <a href="https://github.com/RobotLocomotion/drake/blob/master/common/test_utilities/expect_throws_message.h">DRAKE_EXPECT_THROWS_MESSAGE</a>,
+  but only if the tested function's Doxygen documentation mentions that the
+  function throws an exception.</p>
 
-  <p class="drake">We allow exceptions to be thrown because it enables a more
-  detailed description of the error to be provided relative to an assert
-  statement.</p>
-
-  <p class="drake">Note: This is a work-in-progress rule, but captures our
-  currently-in-effect style. We are open to discussion on additional uses for
-  exceptions if and when the need arises.</p>
+  <p class="drake">When documenting exceptions in an API, only state that
+  the function will throw <code>std::exception</code>; never promise a more
+  specific subclass:</p>
+  <ul class="drake">
+  <li>As we evolve implementations, sometimes it becomes difficult to upkeep
+  the old promises (especially if they were the semantically "wrong" type), or
+  to refactor the code in ways that keeps the subclass unchanged.</li>
+  <li>There's no great way to deprecate a particular exception signature.</li>
+  <li>Since we can't catch exceptions anyway, nevermind use a multi-layer-catch
+  by specific subclasses, the only purpose of a subclass is for improved error
+  reporting -- this purpose is still met by throwing a subclass, but we don't
+  need to document it in Doxygen for this purpose.</li>
+  </ul>
+  </p>
 </div>
 
 <p class="pros"></p>
 <ul>
+  <li class="drake">We allow exceptions to be thrown because it enables a more
+  detailed description of the error to be provided relative to an assert
+  statement.</li>
+
   <li>Exceptions allow higher levels of an application to
   decide how to handle "can't happen" failures in deeply
   nested functions, without the obscuring and error-prone
@@ -4227,8 +4243,14 @@ and actionable from a user point of view.</p>
 
 <h3 id="Boost">Boost</h3>
 
+<div class="drake">
+<p>Drake's library code is not permitted to use Boost.</p>
+</div>
+
+<div class="nondrake">
 <p>Use only approved libraries from the Boost library
 collection.</p>
+</div>
 
 <p class="definition"></p>
 <p> The
@@ -4249,8 +4271,14 @@ advanced template techniques, and an excessively
 
 <p class="decision"></p>
 
+<div class="drake">
+<p>Drake's library code is not permitted to use Boost.  To improve uptake,
+we have chosen not to inflict this dependency on our users.  It would be
+permissible for unit tests to use Boost, though so far we have not seen
+any need for that.</p>
+</div>
 
-
+<div class="nondrake">
 <div>
 <p>In order to maintain a high level of readability for
 all contributors who might read and maintain code, we
@@ -4324,6 +4352,7 @@ Currently, the following libraries are permitted:</p>
 <p>We are actively considering adding other Boost
 features to the list, so this list may be expanded in
 the future.</p>
+</div>
 </div>
 
 <h3 id="std_hash">std::hash</h3>
