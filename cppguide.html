@@ -5407,12 +5407,25 @@ here only for the avoidence of doubt during code reviews.</p>
 
 <h3 id="Deprecation_Comments">Deprecation Comments</h3>
 
-<div class="summary">
+<div class="drake">
+<p>Deprecated interfaces should use the
+<a href="https://drake.mit.edu/doxygen_cxx/drake__deprecated_8h.html">
+<code>DRAKE_DEPRECATED</code></a> macro (refer to its API documentation for
+more information). If you wish to see prior usages of the macro, you can use
+the following <code>git</code> query to see commits that add or remove usage of
+the string:</p>
+<pre>
+cd drake
+git log -S DRAKE_DEPRECATED
+</pre>
+</div>
+
+<div class="summary nondrake">
 <p>Mark deprecated interface points with <code>DEPRECATED</code>
 comments.</p>
 </div>
 
-<div class="stylebody">
+<div class="stylebody nondrake">
 
 <p>You can mark an interface as deprecated by writing a
 comment containing the word <code>DEPRECATED</code> in
