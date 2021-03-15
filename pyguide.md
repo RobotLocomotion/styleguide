@@ -22,7 +22,7 @@ This should be synchronized with the relevant styles in
 }
 </style>
 
-# Google Python Style Guide
+# Google Python Style Guide for Drake
 
 <p class="drake">Forked and adapted from the
 <a href="https://google.github.io/styleguide/pyguide.html">Google style
