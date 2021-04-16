@@ -37,38 +37,27 @@ paragraph reflows make future maintainers cry.
 Relevant Pages
 --------------
 
-The relevant modified style guides used by Drake are:
+The subset of the style guides used by Drake are:
 
-* C++ Style Guide:
-[local preview](./cppguide.html) |
-[rendered online](https://drake.mit.edu/styleguide/cppguide.html)
-* Python Style Guide:
-[local preview](./pyguide.html)\* |
-[rendered online](https://drake.mit.edu/styleguide/pyguide.html)
-
-\* These docs must be generated to preview locally. Please see
-<https://drake.mit.edu/documentation_instructions.html> for instructions.
+* C++ Style Guide (aka cppguide)
+* Python Style Guide (aka pyguide)
 
 Making New Changes
 ------------------
 
-Branch, update, and PR as you would any other Drake change.
+Branch, edit, and PR to `styleguide` as you would any other Drake change.
 
-Ensure that Drake is updated. See [Updating Drake](#updating-drake) for more
-information.
+Pull requests merged to the `main` branch here will not be reflected on
+the https://drake.mit.edu/styleguide website until you also PR to Drake
+to update the git sha it uses for `styleguide`.
+
+See [Updating Drake](#updating-drake) for more information.
 
 Previewing Changes
 ------------------
 
-Generally, you can preview changes locally without any build. However, if a page
-is denoted as needing generation, you can view them locally by running this
-script which will indicate necessary prereqs:
-
-    ./preview_site_jekyll.py
-
-You can alternatively preview them on your own GitHub fork.
-
-<!-- TODO(eric): Document this workflow. -->
+See https://drake.mit.edu/documentation_instructions.html for how to preview
+your changes.
 
 Pulling Upstream Changes
 ------------------------
@@ -96,13 +85,12 @@ updates:
             cd styleguide
 
  * Add a "drake" remote for the Drake styleguide and make it the default
-   upstream.  Note that for compatibility with Google, we use the branch
-   `gh-pages` as our master:
+   upstream.
 
         git remote add drake https://github.com/RobotLocomotion/styleguide.git
         git remote set-url --push drake no_push
         git fetch drake
-        git branch --set-upstream-to drake/gh-pages
+        git branch --set-upstream-to drake/main
 
  * Add a "google" remote for the Drake styleguide:
 
@@ -112,7 +100,7 @@ updates:
 Now that you have a repository and remotes set up, you want to be up-to-date
 with Drake and then pull Google's changes:
 
-    git checkout gh-pages
+    git checkout main
     git pull --ff-only
     git checkout -b **NEW_BRANCH_NAME**
     git pull google gh-pages
@@ -139,15 +127,16 @@ Updating Drake
 --------------
 
 Whenever a change to `styleguide` is made, be sure to submit a PR to `drake` to
-bump the `styleguide` SHA.
+bump the `styleguide` git sha.
 
-If there are no changes to supporting code (e.g. `cpplint`):
+If there are no changes `cpplint`:
 
-1. Submit `styleguide` PR, and follow normal review process.
-2. Submit `drake` PR, reference the `styleguide` PR, and follow normal review
-process.
+1. Submit `styleguide` PR, and follow normal review process, finally merging
+into the `main` branch of this repository.
+2. Submit `drake` PR to bump the `styleguide` git sha, and follow the normal
+review process.
 
-If there **are** changes to supporting code:
+If there **are** changes to `cpplint`:
 
 1. Submit the `styleguide` PR.
 2. Submit the `drake` PR, reference the `styleguide` PR, and mark as
@@ -155,7 +144,7 @@ If there **are** changes to supporting code:
 3. Wait until `drake` `*-release` tests pass.
 4. Assign review for `styleguide` PR. Merge once review is done.
 5. Update the `drake` PR to use the `styleguide` merge commit (from
-`gh-pages`). Follow normal review process.
+the `main` branch; not the PR's git sha). Follow normal review process.
 
 --
 
