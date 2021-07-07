@@ -2651,13 +2651,6 @@ reporting only.  Catching exceptions is forbidden except in unit tests as
 noted below.</p>
 
 <div class="stylebody">
-  <p class="drake">Unit tests may catch exceptions using
-  <a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#exception-assertions">EXPECT_THROW</a>
-  or
-  <a href="https://github.com/RobotLocomotion/drake/blob/master/common/test_utilities/expect_throws_message.h">DRAKE_EXPECT_THROWS_MESSAGE</a>,
-  but only if the tested function's Doxygen documentation mentions that the
-  function throws an exception.</p>
-
   <p class="drake">When documenting exceptions in an API, only state that
   the function will throw <code>std::exception</code>; never promise a more
   specific subclass:</p>
@@ -2667,11 +2660,28 @@ noted below.</p>
   to refactor the code in ways that keeps the subclass unchanged.</li>
   <li>There's no great way to deprecate a particular exception signature.</li>
   <li>Since we can't catch exceptions anyway, nevermind use a multi-layer-catch
-  by specific subclasses, the only purpose of a subclass is for improved error
-  reporting -- this purpose is still met by throwing a subclass, but we don't
-  need to document it in Doxygen for this purpose.</li>
+  by specific subclasses, the only purpose of choosing a specific subclass is
+  for improved error reporting -- this purpose is still met by throwing a
+  subclass, but we don't need to document it in the API for this purpose.</li>
   </ul>
-  </p>
+
+  <p class="drake">When throwing and there is no particular reason to choose
+  any particular subclass of <code>std::exception</code> to be thrown, prefer
+  to use <code>std::logic_error</code> as our nominal concrete type. The
+  clarity of the error message string matters more than the subtype choice.</p>
+
+  <p class="drake">Unit tests may catch exceptions using
+  <a href="https://github.com/google/googletest/blob/master/googletest/docs/AdvancedGuide.md#exception-assertions">EXPECT_THROW</a>
+  or
+  <a href="https://github.com/RobotLocomotion/drake/blob/master/common/test_utilities/expect_throws_message.h">DRAKE_EXPECT_THROWS_MESSAGE</a>:</p>
+  <ul class="drake">
+  <li>Only test for exceptions under the conditions where the tested function's
+  API documentation promises that the function throws an exception.</li>
+  <li>Only test for a specific subtype of <code>std::exception</code> when the
+  subtype is <em>necessary</em> to determine whether the code behaved correctly,
+  e.g., in cases where the code may throw several different types of exception
+  and the subtype fully disambiguates which condition was triggered. (This is
+  rare.)</li>
 </div>
 
 <p class="pros"></p>
