@@ -2619,6 +2619,28 @@ References:
   <li><a href="https://stackoverflow.com/questions/10231349/are-the-days-of-passing-const-stdstring-as-a-parameter-over">Stack Overflow: Are the days of passing const std::string& as a parameter over?</a></li>
 </ul>
 </p>
+
+<h4 id="Pass_By_Value_Primitives">Pass by Value: Primitives</h4>
+
+<p>Prefer to pass primitives (e.g., <code>int</code> or <code>double</code>)
+by value, not by const reference.</p>
+
+<p>The same goes for copyable types that are tantamount to primitives,
+such as type-safe integers (e.g., <code>drake::TypeSafeIndex</code> or
+<code>drake::Identifier</code>) and thin wrappers
+(e.g., <code>std::optional&lt;double&gt;</code>, because it's akin to a
+pair of <code>(bool, double)</code>).
+
+<p>Drake's
+<a href="/doxygen_cxx/group__default__scalars.html">default scalars</a>
+(known conventionally as <code>&lt;typename T&gt;</code>) are often thought
+of as a <code>double</code> because they denote a mathematical scalar,
+but because scalar types other than <code>double</code> are not primitives,
+templated scalars should be passed as <code>const T&</code>, not by value.</p>
+
+<p>See also <a href="#Use_of_const">Use of const</a> for an explanation of
+whether arguments passed by-value may be declared <code>const</code>.</p>
+
 </div>
 
 <h3 id="Friends">Friends</h3>
