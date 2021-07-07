@@ -4748,12 +4748,15 @@ parameters should follow the rules for <a href="#Variable_Names">
 variable names</a>.</p>
 
 <p class="exception drake">
-  Method names may violate both the name structure standard and the “long,
-  human-readable” standard above if a short, non-compliant name more closely
-  matches the common conventions of the field. For instance, the matrix
-  portion of a linear complementarity constraint is traditionally ‘M’ (one
-  letter, upper-case); it is not mandatory to downcase it or give it a more
-  verbose name.
+  Variable and method names may violate both the capitalization standard and
+  the “long, human-readable” standard above if a short, non-compliant name
+  more closely matches the common conventions of the field. For instance, the
+  matrix portion of a linear complementarity constraint is traditionally ‘M’
+  (one letter, upper-case); it is not mandatory to downcase it or give it a
+  more verbose name. However, even if a variable name is capitalized to
+  match common conventions, we still use underscores ("snake case") to delimit
+  its words, not "camel case". For instance, <code>Ai_triplets</code> would
+  be the code spelling of the phrase “Aᵢ triplets”.
 </p>
 <p class="exception drake">
   Note that the Drake multibody tree and related types have their own naming
