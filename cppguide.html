@@ -4894,6 +4894,46 @@ Storage Duration</a> for details) should be named this way.  This
 convention is optional for variables of other storage classes, e.g., automatic
 variables, otherwise the usual variable naming rules apply.</p>
 
+<div class="drake">
+
+<p>Never use <code>kMixedCase</code> style for template arguments. In the
+typical case, a template argument will refer to differing values within the
+same program, so is not a program-wide constant.</p>
+
+<pre>// OK - num_stages names to a value that is not a program-wide constant.
+
+template &lt;typename T, int num_stages = 2&gt;
+class RadauIntegrator { ... };
+</pre>
+
+<pre class="badcode">// BAD - kNumStages is not a program-wide constant.
+
+template &lt;typename T, int kNumStages = 2&gt;
+class RadauIntegrator { ... };
+</pre>
+
+<p>Even in the case of class data members (whether static or non-static),
+never add a trailing underscore to a <code>kMixedCase</code> name.</p>
+
+<pre>class Foo {
+  ...
+ private:
+  const std::string default_name_{"name"};  // OK - snake_case_ member.
+  const std::string kDefaultName{"name"};   // OK - program-wide constant.
+  static const int kDefaultValue{1000};     // OK - static constant.
+};
+</pre>
+
+<pre class="badcode">class Foo {
+  ...
+ private:
+  const std::string kDefaultName_{"name"};  // Bad - underscore.
+  static const int kDefaultValue_{1000};    // Bad - underscore.
+};
+</pre>
+
+</div>
+
 <h3 id="Function_Names">Function Names</h3>
 
 <p>Regular functions have mixed case; accessors and mutators may be named
