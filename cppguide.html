@@ -1914,7 +1914,7 @@ mentioned above. We prefer to have it consistently
 first, where it can be mostly ignored and does not
 interfere with the ability to have default parameters
 at the end of the parameter list. So a
-<code>Context</code> parameter should come first, and 
+<code>Context</code> parameter should come first, and
 be declared either <code>const Context&</code>, or
 <code>Context*</code> if it is mutable.</p>
 
@@ -2213,9 +2213,43 @@ C++ that may differ from what you see elsewhere.</p>
 <h3 id="Memory Allocation">Memory Allocation</h3>
 
 <div class="summary">
-  <p>No dynamic allocation in the inner simulation/control loops. Code should
-    be still be thread-safe (e.g. be careful with pre-allocations).
+<p>Prefer to allocate dynamic memory outside of performance-critical code
+regions (e.g., simulation steps, control loops). Code that pre-allocates must
+be thread-safe, within common Drake thread use idioms (see below).
+Performance-critical code that promises to avoid allocations must have an
+automated acceptance test using the the Drake
+<a href="https://github.com/RobotLocomotion/drake/blob/master/common/test_utilities/limit_malloc.h">LimitMalloc</a>
+tool.
 </p>
+</div>
+
+<div class="stylebody">
+
+<p>Pre-allocating memory for use in high-performance code avoids potentially
+expensive operations to obtain memory from the heap. Importantly, since the
+heap is a process-global resource, heap operations can incur synchronization
+costs, such as waiting on a mutex. So, heap operations are not only expensive,
+but also have a non-deterministic run-time cost.</p>
+
+<p>In some situations, it may be necessary to allocate memory inside a function
+executed inside a function called in a performance-critical loop. This may be
+acceptable if that initialization occurs in the first few loop invocations and
+the function subsequently ceases to allocate.</p>
+
+<p>One big advantage of the standard heap operations is that they <i>are</i>
+thread-safe, and their wide use ensures that the implementations are efficient
+and high-quality. When pre-allocating, the code is likely to reuse the storage
+in less common ways. Be careful to avoid situations where the storage could be
+accessed from multiple threads without synchronization.</p>
+
+<p>In Drake, the most common thread use idiom is the single-system,
+multiple-context idiom. Multiple threads each own a Drake context, and they
+reuse a shared system (or diagram). To support this, system (or diagram)
+classes must never store mutable for a single execution directly; rather, they
+should obtain storage via a Drake cache entry, which will be allocated on a
+per-context basis. An example of this technique can be found in
+<a href=https://reviewable.io/reviews/robotlocomotion/drake/14929>PR #14929</a>.</p>
+
 </div>
 
 </div>
@@ -2379,7 +2413,7 @@ you can download
 </div>
 
 </div>
- 
+
 <div class="drake">
 <h3 id="GTEST_specific">GTEST-Specific</h3>
 
@@ -2395,7 +2429,7 @@ Death tests are difficult to implement and maintain correctly, and there is
 almost always a better formulation for the implementation and test that does
 not involve death tests.  Death should almost never be part of a method
 contract and so it is not necessary to test it.
-</p> 
+</p>
 </div>
 
 </div>
@@ -5403,7 +5437,7 @@ convention that is compatible with the CLion IDE's syntax highlighting:</p>
 
 <p class="drake">This indentation is allowed, but not required.  We mention it
 here only for the avoidence of doubt during code reviews.</p>
-</div> 
+</div>
 
 <h3 id="Deprecation_Comments">Deprecation Comments</h3>
 
@@ -5458,7 +5492,7 @@ new interface point.</p>
 
 
 
-</div> 
+</div>
 
 <h3 id="Authorship_Comments">
 <span class="drake">Authorship Comments</span></h3>
@@ -6297,7 +6331,7 @@ int pi{3.14};  // Compile error: narrowing conversion.
       initialized in this manner since the compiler requires that they be
       initialized in the constructor's initializer list.</li>
   </ul>
-</div> 
+</div>
 
 <h3 id="Preprocessor_Directives">Preprocessor Directives</h3>
 
