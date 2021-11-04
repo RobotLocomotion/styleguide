@@ -4591,11 +4591,16 @@ guide, the following C++ features may not be used:</p>
   </ul>
 
 <p class="decision"></p>
-<p>Do not use nonstandard extensions. You may use portability wrappers that
+<p class="nondrake">Do not use nonstandard extensions. You may use portability wrappers that
   are implemented using nonstandard extensions, so long as those wrappers
 
   are provided by a designated project-wide
   portability header.</p>
+<p class="drake">
+  Use extensions that are valid for Drake's supported compilers. If there is
+  a difference between GCC and Clang, or versions therein, consider providing
+  wrappers.
+</p>
 
 <h3 id="Aliases">Aliases</h3>
 
