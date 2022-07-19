@@ -285,12 +285,14 @@ to provide a declaration or definition of that symbol. It should not
 include header files for any other reason.
 </p>
 
+<div class="nondrake">
 <p>Do not rely on transitive inclusions. This allows people to remove
 no-longer-needed <code>#include</code> statements from their headers without
 breaking clients. This also applies to related headers
 - <code>foo.cc</code> should include <code>bar.h</code> if it uses a
 symbol from it even if <code>foo.h</code>
 includes <code>bar.h</code>.</p>
+</div>
 
 <p class="drake"><a name="iwyu_exception"/>
 While we encourage you to Include What You Use (IWYU) since it improves code
@@ -387,6 +389,8 @@ void test(D* x) { f(x); }  // Calls f(B*)
 defined in another project.</p>
 
 <h3 id="Inline_Functions">Inline Functions</h3>
+
+WIP
 
 <p>Define functions inline only when they are small, say, 10
 lines or fewer.</p>
@@ -6561,6 +6565,10 @@ void foo() {  // Correct.  No extra indentation within namespace.
 <p>Use of horizontal whitespace depends on location. Never put
 trailing whitespace at the end of a line.</p>
 
+<div class="drake">For the pydrake bindings' C++ code (in drake/bindings/...),
+we lint using <tt>clang-format</tt> to enforce uniform formatting. Code reviews
+within that folder need not nitpick the whitespace choices.</div>
+
 <h4>General</h4>
 
 <pre>int i = 0;  // Two spaces before end-of-line comments.
@@ -6689,6 +6697,10 @@ useful:</p>
   this becomes a special case of the previous rule, helping the comment to
   "attach" to the subsequent declaration.</li>
 </ul>
+
+<div class="drake">For the pydrake bindings' C++ code (in drake/bindings/...),
+we lint using <tt>clang-format</tt> to enforce uniform formatting. Code reviews
+within that folder need not nitpick the whitespace choices.</div>
 
 <h2 id="Exceptions_to_the_Rules">Exceptions to the Rules</h2>
 
