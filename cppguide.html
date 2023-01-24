@@ -4915,12 +4915,40 @@ variable names</a>.</p>
   be the code spelling of the phrase “Aᵢ triplets”.
 </p>
 <p class="exception drake">
-  Note that the Drake multibody tree and related types have their own naming
+  The Drake <code>MultibodyPlant</code> and related types have their own naming
   standard, "Monogram Notation", described
   in <code>drake/multibody/multibody_doxygen.h</code>
   (<a href="http://drake.mit.edu/doxygen_cxx/group__multibody__notation.html">generated
   documentation here</a>), that applies to all variables that denote frames
   and transforms between frames.
+</p>
+
+<p class="drake">
+  However, there are two cases where monogram notation can be obfuscating rather than
+  clarifying:</p>
+  <ul class="drake">
+    <li>names of API parameters that will become user-visible PyDrake keyword arguments
+        (kwargs), and</li>
+    <li>struct member names that may appear as designated initializers in C++ API calls.</li>
+  </ul>
+<p class="drake">
+  For these two cases, don't use monogram notation because a user's choice of frame
+  or point names at a call site is unlikely to coincide with yours. Thus a parameter named
+  <code>X_AB</code> can result in a
+  call site like <code>f(X_AB=X_RS)</code> or worse <code>f(X_AB=X_BA)</code>.  Instead use a
+  call-site friendly name, rigorously defined in documentation, but allowing a call site
+  like <code>f(pose_of_body1=X_RS)</code>, where R and S are frame names meaningful to the
+  caller. 
+</p>
+
+<p class="drake">
+  This rule does not mean you should abandon monogram notation. Your implementation
+  of a function that uses call site-friendly names should start by aliasing
+  those names to monogram notation using your internal choice of frame or point names.
+  Also, except in these two cases, we strongly encourage you to use monogram-named parameters
+  in internal code (where it makes sense).
+</p>
+
 </p>
 
 <h3 id="File_Names">File Names</h3>
