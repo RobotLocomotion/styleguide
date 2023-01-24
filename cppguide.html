@@ -4924,25 +4924,29 @@ variable names</a>.</p>
 </p>
 
 <p class="drake">
-  However, even among programmers well-versed in monogram notation there are cases where it can
-  be obfuscating rather than clarifying:</p>
+  However, there are two cases where monogram notation can be obfuscating rather than
+  clarifying:</p>
   <ul class="drake">
-    <li>names of API parameters that will become user-visible PyDrake kwargs, and</li>
-    <li>struct member names that will appear as designated initializers in C++ API calls.</li>
+    <li>names of API parameters that will become user-visible PyDrake keyword arguments
+        (kwargs), and</li>
+    <li>struct member names that may appear as designated initializers in C++ API calls.</li>
   </ul>
 <p class="drake">
-  Don't use monogram notation for those names because an API user's choice of frame names is
-  unlikely to coincide with yours. Thus a parameter named <code>X_AB</code> can result in a
-  call site like <code>f(X_AB=X_RS)</code> or worse <code>f(X_AB=X_BA)</code>.
-  Instead use a descriptive name, rigorously defined in documentation, but allowing a call site
+  For these two cases, don't use monogram notation because user's choice of frame
+  or point names at a call site is unlikely to coincide with yours. Thus a parameter named
+  <code>X_AB</code> can result in a
+  call site like <code>f(X_AB=X_RS)</code> or worse <code>f(X_AB=X_BA)</code>.  Instead use a
+  call-site friendly name, rigorously defined in documentation, but allowing a call site
   like <code>f(pose_of_body1=X_RS)</code>, where R and S are frame names meaningful to the
-  caller. The internal implementations of functions that use such call site-friendly
-  parameter names should start by aliasing them to monogram notation names using the
-  internal choices of frame names.
+  caller. 
 </p>
 
 <p class="drake">
-  Use of monogram-named parameters in internal code where it makes sense is permitted.
+  This rule does not mean you should abandon monogram notation. Your implementation
+  of a function that uses call site-friendly names should start by aliasing
+  those names to monogram notation using your internal choice of frame or point names.
+  Also, except in these two cases, we strongly encourage you to use monogram-named parameters
+  in internal code (where it makes sense).
 </p>
 
 </p>
