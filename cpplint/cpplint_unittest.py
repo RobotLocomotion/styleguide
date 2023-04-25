@@ -3442,16 +3442,13 @@ class CpplintTest(CpplintTestBase):
                             ['}  // anonymous namespace (utils)',  # Variant
                              'namespace {'] +
                             ([''] * 10) +
-                            ['}  // anonymous namespace',  # No warning
+                            ['}  // anonymous namespace',  # Anon warning
                              'namespace missing_comment {'] +
                             ([''] * 10) +
                             ['}',  # Warning here
                              'namespace no_warning {'] +
                             ([''] * 10) +
                             ['}  // namespace no_warning',
-                             'namespace no_warning {'] +
-                            ([''] * 10) +
-                            ['};  // end namespace no_warning',
                              '#define MACRO \\',
                              'namespace c_style { \\'] +
                             (['\\'] * 10) +
@@ -3467,12 +3464,8 @@ class CpplintTest(CpplintTestBase):
     self.assertEquals(1, error_collector.Results().count(
         'Namespace should be terminated with "// namespace nested"'
         '  [readability/namespace] [5]'))
-    self.assertEquals(3, error_collector.Results().count(
+    self.assertEquals(6, error_collector.Results().count(
         'Anonymous namespace should be terminated with "// namespace"'
-        '  [readability/namespace] [5]'))
-    self.assertEquals(2, error_collector.Results().count(
-        'Anonymous namespace should be terminated with "// namespace" or'
-        ' "// anonymous namespace"'
         '  [readability/namespace] [5]'))
     self.assertEquals(1, error_collector.Results().count(
         'Namespace should be terminated with "// namespace missing_comment"'
