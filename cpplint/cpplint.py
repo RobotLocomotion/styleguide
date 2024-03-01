@@ -58,7 +58,7 @@ from six import text_type as unicode
 from six.moves import xrange
 
 
-_USAGE = """
+_USAGE = r"""
 Syntax: cpplint.py [--verbose=#] [--output=vs7] [--filter=-x,+y,...]
                    [--counting=total|toplevel|detailed] [--root=subdir]
                    [--linelength=digits] [--headers=x,y,...]
@@ -1112,7 +1112,7 @@ class FileInfo(object):
     return os.path.abspath(self._filename).replace('\\', '/')
 
   def RepositoryName(self):
-    """FullName after removing the local path to the repository.
+    r"""FullName after removing the local path to the repository.
 
     If we have a real absolute path name here we can try to do something smart:
     detecting the root of the checkout and truncating /path/to/checkout from
