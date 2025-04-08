@@ -4048,7 +4048,7 @@ class CpplintTest(CpplintTestBase):
         'foo.h', 'namespace {',
         'Do not use unnamed namespaces in header files.  See'
         ' https://google-styleguide.googlecode.com/svn/trunk/cppguide.xml#Namespaces'
-        ' for more information.  [build/namespaces] [4]')
+        ' for more information.  [build/namespaces_headers] [4]')
     # namespace registration macros are OK.
     self.TestLanguageRulesCheck('foo.h', 'namespace {  \\', '')
     # named namespaces are OK.
