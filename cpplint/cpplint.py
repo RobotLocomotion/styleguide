@@ -214,6 +214,8 @@ _ERROR_CATEGORIES = [
     'build/include_alpha',
     'build/include_order',
     'build/include_what_you_use',
+    'build/namespaces_headers',
+    'build/namespaces_literals',
     'build/namespaces',
     'build/pragma_once',
     'build/printf_format',
@@ -4856,9 +4858,14 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension,
           % (match.group(1), match.group(2)))
 
   if Search(r'\busing namespace\b', line):
-    error(filename, linenum, 'build/namespaces', 5,
-          'Do not use namespace using-directives.  '
-          'Use using-declarations instead.')
+    if Search(r'\bliterals\b', line):
+      error(filename, linenum, 'build/namespaces_literals', 5,
+            'Do not use namespace using-directives.  '
+            'Use using-declarations instead.')
+    else:
+      error(filename, linenum, 'build/namespaces', 5,
+            'Do not use namespace using-directives.  '
+            'Use using-declarations instead.')
 
   # Detect variable-length arrays.
   match = Match(r'\s*(.+::)?(\w+) [a-z]\w*\[(.+)];', line)
@@ -4905,7 +4912,7 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension,
   if (IsHeaderExtension(file_extension)
       and Search(r'\bnamespace\s*{', line)
       and line[-1] != '\\'):
-    error(filename, linenum, 'build/namespaces', 4,
+    error(filename, linenum, 'build/namespaces_headers', 4,
           'Do not use unnamed namespaces in header files.  See '
           'https://google-styleguide.googlecode.com/svn/trunk/cppguide.xml#Namespaces'
           ' for more information.')

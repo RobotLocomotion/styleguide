@@ -3140,6 +3140,10 @@ class CpplintTest(CpplintTestBase):
     DoTest(self, ['', '', '', 'using namespace foo;'])
     DoTest(self, ['// hello', 'using namespace foo;'])
 
+  def testUsingLiteralsNamespaces(self):
+    self.TestLint('using namespace std::literals;', 'Do not use namespace using-directives.  Use using-declarations instead.  [build/namespaces_literals] [5]')
+    self.TestLint('using namespace std::literals::chrono_literals;', 'Do not use namespace using-directives.  Use using-declarations instead.  [build/namespaces_literals] [5]')
+
   def testNewlineAtEOF(self):
     def DoTest(self, data, is_missing_eof):
       error_collector = ErrorCollector(self.assertTrue)
@@ -4044,7 +4048,7 @@ class CpplintTest(CpplintTestBase):
         'foo.h', 'namespace {',
         'Do not use unnamed namespaces in header files.  See'
         ' https://google-styleguide.googlecode.com/svn/trunk/cppguide.xml#Namespaces'
-        ' for more information.  [build/namespaces] [4]')
+        ' for more information.  [build/namespaces_headers] [4]')
     # namespace registration macros are OK.
     self.TestLanguageRulesCheck('foo.h', 'namespace {  \\', '')
     # named namespaces are OK.
