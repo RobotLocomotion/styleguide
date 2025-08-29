@@ -458,7 +458,7 @@ and incurs cognitive overhead for readers of that API- the more complex the func
 the higher the cost.</li>
 
 <li>Public definitions expose implementation details that are at best harmless and
-often extraneous.</li>
+often extraneous<span class="drake">, and can lead to bloated compilation times</span>.</li>
 </ul>
 
 <p class="decision"></p>
@@ -502,8 +502,7 @@ customarily be placed into <code>*.cc</code> files; only if there is an acute
 reason to put it in a header may it appear there.
 </p>
 
-<p>You are permitted to define a function inline (i.e., define it in the
-header file) only:
+<p>You are permitted to define a function in a header file only:
 <ol>
   <li>if the function is a
       <a href="#Function_Names"><code>snake_case</code></a>
