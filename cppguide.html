@@ -5446,7 +5446,7 @@ e.g., automatic variables; otherwise the usual variable naming rules apply. For 
 typical case, a template argument will refer to differing values within the
 same program, so is not a program-wide constant.</p>
 
-<pre>// OK - num_stages names to a value that is not a program-wide constant.
+<pre class="goodcode">// OK - num_stages names to a value that is not a program-wide constant.
 
 template &lt;typename T, int num_stages = 2&gt;
 class RadauIntegrator { ... };
@@ -5461,7 +5461,7 @@ class RadauIntegrator { ... };
 <p>Even in the case of class data members (whether static or non-static),
 never add a trailing underscore to a <code>kMixedCase</code> name.</p>
 
-<pre>class Foo {
+<pre class="goodcode">class Foo {
   ...
  private:
   const std::string default_name_{"name"};  // OK - snake_case_ member.
