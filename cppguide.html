@@ -6726,20 +6726,6 @@ while (condition) continue;  // Good - `continue` indicates no logic.
 <p>No spaces around period or arrow. Pointer operators do not
 have trailing spaces.</p>
 
-<div class="drake">
-<p>When declaring a pointer or a reference, the "<code>*</code>"
-and "<code>&amp;</code>"; symbols must be next to the variable <em>type</em>,
-not the variable <em>name</em>. In other words use:</p>
-<pre>const MyClass&amp; foo;</pre>
-<p>instead of</p>
-<pre class="badcode">const MyClass &amp;foo;  // Bad - & in wrong place</pre>
-<p>This is what is enforced by <a href="#clang-format">clang-format</a>, unless
-you declare multiple variables with a single statement. (When variables are
-pointers or references, you may not declare them with a single statement, as
-explained later in this section.)</p>
-</div>
-</div>
-
 <p>The following are examples of correctly-formatted
 pointer and reference expressions:</p>
 
@@ -6759,7 +6745,6 @@ x = r-&gt;y;
    <code>*</code> or <code>&amp;</code>.</li>
 </ul>
 
-<div class="nondrake">
 <p>When referring to a pointer or reference (variable declarations or definitions, arguments, return
 types, template parameters, etc.), you must not place a space before the asterisk/ampersand. Use a
 space to separate the type from the declared name (if present).</p>
@@ -6770,7 +6755,6 @@ const std::string&amp; str;
 int* GetPointer();
 std::vector&lt;char*&gt;  // Note no space between '*' and '&gt;'
 </pre>
-</div>
 
 <p>It is allowed (if unusual) to declare multiple variables in the same
 declaration, but it is disallowed if any of those have pointer or
