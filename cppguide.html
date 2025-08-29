@@ -6082,7 +6082,7 @@ disable it at certain points. (See the
 <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">Clang Format docs</a>
 for details.)</p>
 <p>For example, when writing a matrix literal, we should preseve its layout:
-<pre>
+<pre class="goodcode">
   // clang-format off
   Eigen::MatrixXd samples(3, 5);
   samples << 1, 1, 1,
@@ -6096,7 +6096,7 @@ for details.)</p>
 guide it to a more suitable answer. One trick we sometimes use in this case is
 to add a trailing end-of-line comment to force a line break; we annotate this
 with <code>BR</code> (akin to the HTML <code>&lt;br&gt;</code> element):
-<pre>
+<pre class="goodcode">
   return std::visit<NodeType>(  // BR
       overloaded{
           [](const ScalarData&) {
