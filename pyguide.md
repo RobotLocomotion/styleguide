@@ -2153,9 +2153,14 @@ details of a function's implementation that are not relevant to the caller are
 better expressed as comments alongside the code than within the function's
 docstring.
 
-The docstring may be descriptive-style (`"""Fetches rows from a Bigtable."""`)
+The docstring
+<span class="nondrake">may</span> <span class="drake">must</span>
+be descriptive-style (`"""Fetches rows from a Bigtable."""`)
+<span class="nondrake">
 or imperative-style (`"""Fetch rows from a Bigtable."""`), but the style should
-be consistent within a file. The docstring for a `@property` data descriptor
+be consistent within a file.
+</span>
+The docstring for a `@property` data descriptor
 should use the same style as the docstring for an attribute or a
 <a href="#doc-function-args">function argument</a> (`"""The Bigtable path."""`,
 rather than `"""Returns the Bigtable path."""`).
