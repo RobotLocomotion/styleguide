@@ -5557,7 +5557,14 @@ naming.</p>
 category: type template parameters should follow the rules for naming
 <a href="#Type_Names">types</a>, and non-type template
 parameters should follow the rules for naming <a href="#Variable_Names">
-variables</a> or <a href="#Constant_Names">constants</a>.
+variables</a>
+<span class="nondrake">or <a href="#Constant_Names">constants</a></span>.
+
+<div class="drake">
+<p>Never use <code>kMixedCase</code> style for template arguments. In the
+typical case, a template argument will refer to differing values within the
+same program, so is not a program-wide constant.</p>
+</div>
 
 </p><h3 id="Macro_Names">Macro Names</h3>
 
