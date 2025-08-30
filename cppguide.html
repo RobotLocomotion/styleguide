@@ -5421,7 +5421,9 @@ const int kAndroid8_0_0 = 24;  // Android 8.0.0
 <p>All such variables with static storage duration (i.e., statics and globals,
 see <a href="http://en.cppreference.com/w/cpp/language/storage_duration#Storage_duration">
 Storage Duration</a> for details) should be named this way, including those that are static constant
-class data members and those in templates where different instantiations of the template
+class data members
+<span class="nondrake">and</span><span class="drake">but not</span>
+those in templates where different instantiations of the template
 may have different values.  This convention is optional for variables of other storage classes,
 e.g., automatic variables; otherwise the usual variable naming rules apply. For example:</p>
 
