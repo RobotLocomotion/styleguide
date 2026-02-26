@@ -3849,3 +3849,8 @@ benefits of the new style, or the tendency of the codebase to converge on newer
 styles over time.
 
 -->
+
+<div align="right">
+  <a href="https://accessibility.mit.edu/">Accessibility</a> &nbsp; | &nbsp;
+  <a href="https://drake.mit.edu/pydrake/">Drake Python API Documentation</a>
+</div>
